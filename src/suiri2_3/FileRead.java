@@ -49,8 +49,17 @@ public class FileRead {
 				br.readLine();
 
 				// line 3-50 (JMAX 48 lines) IP information
-				for (int i = 0; i < JMAX; i++) {
-					System.out.println(br.readLine());
+				for (int j = 0; j < JMAX; j++) {
+					String[] lines = br.readLine().split("\\s+");
+//					System.out.println(br.readLine());
+					System.out.println(lines[1]);  // 0:blank 1:Y(j)
+					System.out.println(lines[2]);  // 2:IP X(i) 36
+					for(int i = 0;i<lines[2].length();i++) {
+						System.out.printf("%d:%s ",i, lines[2].substring(i, i+1));
+						arraysFCell.get(j).get(i).setIp(lines[2].substring(i,i+1));
+						System.out.println(arraysFCell.get(j).get(i));
+					}
+					System.out.print("\n");
 				}
 
 				// line 51. Dummy
@@ -59,7 +68,7 @@ public class FileRead {
 				// line 52-291 (JMAX 48 * 5 lines) ZB information
 				for (int i = 0; i < JMAX; i++) {
 					for (int j = 0; j < 5; j++) {
-						System.out.println(br.readLine());
+//						System.out.println(br.readLine());
 					}
 				}
 
@@ -69,7 +78,7 @@ public class FileRead {
 				// line 293-532 (JMAX 48 * 5 lines) RN information
 				for (int i = 0; i < JMAX; i++) {
 					for (int j = 0; j < 5; j++) {
-						System.out.println(br.readLine());
+//						System.out.println(br.readLine());
 					}
 				}
 

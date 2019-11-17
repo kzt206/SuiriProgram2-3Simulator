@@ -10,7 +10,7 @@ public class Main {
 		
 		arrayFC = fr.getData();
 		
-		System.out.println(arrayFC);
-		System.out.println(arrayFC.get(0).get(0));
+//		System.out.println(arrayFC);
+		System.out.println(arrayFC.get(12).get(17)); //get(j or y).get(i or x)
 	}
 }
