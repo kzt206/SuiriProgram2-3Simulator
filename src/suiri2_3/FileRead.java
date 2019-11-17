@@ -32,7 +32,7 @@ public class FileRead {
 				DX = Double.parseDouble(dataString[3]);
 				DY = Double.parseDouble(dataString[4]);
 				
-				System.out.printf("IMAX:%d, JMAX:%d, DX:%f, DY:%f\n", IMAX, JMAX, DX, DY);
+//				System.out.printf("IMAX:%d, JMAX:%d, DX:%f, DY:%f\n", IMAX, JMAX, DX, DY);
 				
 				for(int j = 0;j<JMAX;j++) {
 					ArrayList<FloodCell> array = new ArrayList<>();
@@ -52,14 +52,14 @@ public class FileRead {
 				for (int j = 0; j < JMAX; j++) {
 					String[] lines = br.readLine().split("\\s+");
 //					System.out.println(br.readLine());
-					System.out.println(lines[1]);  // 0:blank 1:Y(j)
-					System.out.println(lines[2]);  // 2:IP X(i) 36
+//					System.out.println(lines[1]);  // 0:blank 1:Y(j)
+//					System.out.println(lines[2]);  // 2:IP X(i) 36
 					for(int i = 0;i<lines[2].length();i++) {
-						System.out.printf("%d:%s ",i, lines[2].substring(i, i+1));
+//						System.out.printf("%d:%s ",i, lines[2].substring(i, i+1));
 						arraysFCell.get(j).get(i).setIp(lines[2].substring(i,i+1));
-						System.out.println(arraysFCell.get(j).get(i));
+//						System.out.println(arraysFCell.get(j).get(i));
 					}
-					System.out.print("\n");
+//					System.out.print("\n");
 				}
 
 				// line 51. Dummy
