@@ -4,13 +4,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class FileRead {
 
-	public int getData() {
+	public ArrayList<ArrayList<FloodCell>> getData() {
 		int IMAX = 0;
 		int JMAX = 0;
 		double DX, DY;
+
+		ArrayList<ArrayList<FloodCell>> arraysFCell = new ArrayList<ArrayList<FloodCell>>();
 
 		try {
 			File file = new File("GEO2D.DAT");
@@ -28,8 +31,19 @@ public class FileRead {
 				JMAX = Integer.parseInt(dataString[2]);
 				DX = Double.parseDouble(dataString[3]);
 				DY = Double.parseDouble(dataString[4]);
-
+				
 				System.out.printf("IMAX:%d, JMAX:%d, DX:%f, DY:%f\n", IMAX, JMAX, DX, DY);
+				
+				for(int j = 0;j<JMAX;j++) {
+					ArrayList<FloodCell> array = new ArrayList<>();
+					for(int i = 0;i<IMAX;i++) {
+						FloodCell fcell = new FloodCell();
+						fcell.setX(i);
+						fcell.setY(j);
+						array.add(fcell);
+					}
+					arraysFCell.add(array);
+				}
 //			
 				// line 2. Dummy
 				br.readLine();
@@ -68,6 +82,6 @@ public class FileRead {
 			e.printStackTrace();
 		}
 
-		return IMAX;
+		return arraysFCell;
 	}
 }
