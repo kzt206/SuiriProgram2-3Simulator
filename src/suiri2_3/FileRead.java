@@ -22,8 +22,6 @@ public class FileRead {
 
 				// Read file.
 				String dataString[];
-//			while((dataString = br.readLine()) != null) {
-//				System.out.println(dataString);
 //			}
 				// line 1.
 				dataString = br.readLine().split("\\s+");
@@ -55,31 +53,70 @@ public class FileRead {
 //					System.out.println(lines[1]);  // 0:blank 1:Y(j)
 //					System.out.println(lines[2]);  // 2:IP X(i) 36
 					for(int i = 0;i<lines[2].length();i++) {
-//						System.out.printf("%d:%s ",i, lines[2].substring(i, i+1));
 						arraysFCell.get(j).get(i).setIp(lines[2].substring(i,i+1));
-//						System.out.println(arraysFCell.get(j).get(i));
 					}
-//					System.out.print("\n");
 				}
 
 				// line 51. Dummy
 				br.readLine();
 
 				// line 52-291 (JMAX 48 * 5 lines) ZB information
-				for (int i = 0; i < JMAX; i++) {
-					for (int j = 0; j < 5; j++) {
-//						System.out.println(br.readLine());
+				for (int j = 0; j < JMAX; j++) {
+					int i = 0;
+					for (int k = 0; k < 5; k++) {
+						if(k == 0) {
+							String[] lines = br.readLine().split("\\s+");
+							for(int l =0 ; l< 8;l++) {
+								arraysFCell.get(j).get(i).setZb(Double.parseDouble(lines[l+2]));
+								i++;
+							}
+						}else if(k == 4) {
+							String[] lines = br.readLine().split("\\s+");
+							for(int l =0 ; l< 4;l++) {
+								arraysFCell.get(j).get(i).setZb(Double.parseDouble(lines[l+1]));
+								i++;
+							}
+						}else {
+							String[] lines = br.readLine().split("\\s+");
+							for(int l =0 ; l< 8;l++) {
+								arraysFCell.get(j).get(i).setZb(Double.parseDouble(lines[l+1]));
+								i++;
+							}
+						}
+					
 					}
+					
 				}
 
 				// line 292. Dummy
 				br.readLine();
 
 				// line 293-532 (JMAX 48 * 5 lines) RN information
-				for (int i = 0; i < JMAX; i++) {
-					for (int j = 0; j < 5; j++) {
-//						System.out.println(br.readLine());
+				for (int j = 0; j < JMAX; j++) {
+					int i = 0;
+					for (int k = 0; k < 5; k++) {
+						if(k == 0) {
+							String[] lines = br.readLine().split("\\s+");
+							for(int l =0 ; l< 8;l++) {
+								arraysFCell.get(j).get(i).setRn(Double.parseDouble(lines[l+2]));
+								i++;
+							}
+						}else if(k == 4) {
+							String[] lines = br.readLine().split("\\s+");
+							for(int l =0 ; l< 4;l++) {
+								arraysFCell.get(j).get(i).setRn(Double.parseDouble(lines[l+1]));
+								i++;
+							}
+						}else {
+							String[] lines = br.readLine().split("\\s+");
+							for(int l =0 ; l< 8;l++) {
+								arraysFCell.get(j).get(i).setRn(Double.parseDouble(lines[l+1]));
+								i++;
+							}
+						}
+					
 					}
+					
 				}
 
 				// Close file.
