@@ -39,6 +39,6 @@ public class FloodCell {
 	
 	@Override
 	public String toString() {
-		return "x="+this.getX()+", y="+this.getY()+", IP="+this.getIp();
+		return "x="+this.getX()+", y="+this.getY()+", IP="+this.getIp()+", ZB="+this.getZb()+", RN="+this.getRn();
 	}
 }
