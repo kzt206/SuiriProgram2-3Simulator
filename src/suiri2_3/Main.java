@@ -33,6 +33,13 @@ public class Main {
 		//Chage of IP for LEVEE-Break Point
 		arrayFC.get(JBR).get(IBR).setIp("B");
 		
+		FileFloodRead ffRead = new FileFloodRead();
+		ffRead.readData();
+		int NHT = ffRead.getNHT();
+		double TRLX = ffRead.getTRLX();
+		double[] QHYD = ffRead.getFloodQ();
+		
+		
 		
 	}
 }
