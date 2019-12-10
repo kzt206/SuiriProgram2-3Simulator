@@ -41,7 +41,24 @@ public class Main {
 		double TRLX = ffRead.getTRLX();
 		double[] QHYD = ffRead.getFloodQ();
 		
-		//Initialize
+		//Initialization of Variavles
+		double[][] SMO = new double[IMAX][JMAX];
+		double[][] SNO = new double[IMAX][JMAX];
+		double[][] HO = new double[IMAX][JMAX];
+		double[][] ZS = new double[IMAX][JMAX];
+		double[][] SMN = new double[IMAX][JMAX];
+		double[][] SNN = new double[IMAX][JMAX];
+		double[][] HN = new double[IMAX][JMAX];
+		double[][] SMXCV = new double[IMAX][JMAX];
+		double[][] SNYCV = new double[IMAX][JMAX];
+		double[][] HCV = new double[IMAX][JMAX];
+		double[][] CUM = new double[IMAX][JMAX];
+		double[][] CVM = new double[IMAX][JMAX];
+		double[][] CUN = new double[IMAX][JMAX];
+		double[][] CVN = new double[IMAX][JMAX];
+		char[][] IFROF = new char[IMAX][JMAX];
+		char[][] JFROF = new char[IMAX][JMAX];
+		double[][] RNGX = new double[IMAX][JMAX];
 		
 	}
 }
