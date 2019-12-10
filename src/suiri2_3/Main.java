@@ -11,11 +11,13 @@ public class Main {
 		
 		
 		arrayFC = fr.getData();
+		IMAX = fr.getIMAX();
+		JMAX = fr.getJMAX();
 		
 //		System.out.println(arrayFC);
 		System.out.println("Main.java :"+arrayFC.get(10).get(18)); //get(j or y).get(i or x)
-		IMAX = arrayFC.get(0).size();
-		JMAX = arrayFC.size();
+//		IMAX = arrayFC.get(0).size();
+//		JMAX = arrayFC.size();
 		System.out.printf("Main.java :IMAX:%d, JMAX:%d\n", IMAX, JMAX);
 		
 		//Data block
@@ -39,7 +41,7 @@ public class Main {
 		double TRLX = ffRead.getTRLX();
 		double[] QHYD = ffRead.getFloodQ();
 		
-		
+		//Initialize
 		
 	}
 }

@@ -13,6 +13,7 @@ public class FileRead {
 	double DX, DY;
 	
 	public ArrayList<ArrayList<FloodCell>> getData() {
+
 		
 		ArrayList<ArrayList<FloodCell>> arraysFCell = new ArrayList<ArrayList<FloodCell>>();
 
@@ -130,5 +131,13 @@ public class FileRead {
 		}
 
 		return arraysFCell;
+	}
+
+	public int getIMAX() {
+		return this.IMAX;
+	}
+	
+	public int getJMAX() {
+		return this.JMAX;
 	}
 }
