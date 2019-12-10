@@ -7,12 +7,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class FileRead {
-
+	
+	int IMAX = 0;
+	int JMAX = 0;
+	double DX, DY;
+	
 	public ArrayList<ArrayList<FloodCell>> getData() {
-		int IMAX = 0;
-		int JMAX = 0;
-		double DX, DY;
-
+		
 		ArrayList<ArrayList<FloodCell>> arraysFCell = new ArrayList<ArrayList<FloodCell>>();
 
 		try {
