@@ -10,9 +10,9 @@ import java.util.function.DoublePredicate;
 
 public class FileFloodRead {
 
-	int NHT;
-	double TRLX;
-	List<Double> floodQuantity = new ArrayList<>(); 
+	private int NHT;
+	private double TRLX;
+	private List<Double> floodQuantity = new ArrayList<>(); 
 	
 	public int getNHT() {
 		return this.NHT;
