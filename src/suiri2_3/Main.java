@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class Main {
 	public static void main(String... args) {
 		FileRead fr = new FileRead();
+		FileGeo2dRead fGeo2dRead = new FileGeo2dRead();
+		fGeo2dRead.getData();
 		
 		ArrayList<ArrayList<FloodCell>> arrayFC = new ArrayList<ArrayList<FloodCell>>();
 		int IMAX,JMAX;
@@ -14,7 +16,8 @@ public class Main {
 		IMAX = fr.getIMAX();
 		JMAX = fr.getJMAX();
 		
-		System.out.println("20191211 22:09");
+
+		System.out.println("Test via hp");
 		
 //		System.out.println(arrayFC);
 		System.out.println("Main.java :"+arrayFC.get(10).get(18)); //get(j or y).get(i or x)
