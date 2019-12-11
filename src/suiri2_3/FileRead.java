@@ -55,7 +55,7 @@ public class FileRead {
 //					System.out.println(lines[1]);  // 0:blank 1:Y(j)
 //					System.out.println(lines[2]);  // 2:IP X(i) 36
 					for(int i = 0;i<lines[2].length();i++) {
-						arraysFCell.get(j).get(i).setIp(lines[2].substring(i,i+1));
+						arraysFCell.get(j).get(i).setIp(lines[2].substring(i,i+1).toCharArray()[0]);
 					}
 				}
 
