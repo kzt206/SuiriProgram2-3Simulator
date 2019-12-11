@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class Main {
 	public static void main(String... args) {
 		FileRead fr = new FileRead();
+		FileGeo2dRead fGeo2dRead = new FileGeo2dRead();
+		fGeo2dRead.getData();
 		
 		ArrayList<ArrayList<FloodCell>> arrayFC = new ArrayList<ArrayList<FloodCell>>();
 		int IMAX,JMAX;
