@@ -38,7 +38,7 @@ public class Main {
 		
 		//Set Break Point
 		//Chage of IP for LEVEE-Break Point
-		arrayFC.get(JBR).get(IBR).setIp("B");
+		arrayFC.get(JBR).get(IBR).setIp('B');
 		
 		FileFloodRead ffRead = new FileFloodRead();
 		ffRead.readData();

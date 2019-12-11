@@ -7,9 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class FileGeo2dRead {
-	int IMAX = 0;
-	int JMAX = 0;
-	double DX, DY;
+	private int IMAX = 0;
+	private int JMAX = 0;
+	private double DX, DY;
+	private char[][] IP;
+	private double[][] ZB;
+	private double[][] RN;
 	
 	ArrayList<ArrayList<FloodCell>> arraysFCell = new ArrayList<ArrayList<FloodCell>>();
 	
@@ -52,7 +55,7 @@ public class FileGeo2dRead {
 //					System.out.println(lines[1]);  // 0:blank 1:Y(j)
 //					System.out.println(lines[2]);  // 2:IP X(i) 36
 					for(int i = 0;i<lines[2].length();i++) {
-						arraysFCell.get(j).get(i).setIp(lines[2].substring(i,i+1));
+						arraysFCell.get(j).get(i).setIp(lines[2].substring(i,i+1).toCharArray()[0]);
 					}
 				}
 
@@ -120,6 +123,15 @@ public class FileGeo2dRead {
 
 				// Close file.
 				br.close();
+				
+				for(int i = 0; i<IMAX;i++) {
+					for(int j= 0 ;j<JMAX;j++) {
+						IP[i][j] = arraysFCell.get(j).get(i).getIp();
+						ZB[i][j] = arraysFCell.get(j).get(i).getZb();
+						RN[i][j] = arraysFCell.get(j).get(i).getRn();
+					}
+				}
+				
 			} else {
 				System.out.println("File does not exist.");
 			}

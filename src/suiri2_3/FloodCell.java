@@ -4,7 +4,7 @@ public class FloodCell {
 	private int x;
 	private int y;
 	private double zb;
-	private String ip;
+	private char ip;
 	private double rn;
 	public int getX() {
 		return x;
@@ -24,10 +24,10 @@ public class FloodCell {
 	public void setZb(double zb) {
 		this.zb = zb;
 	}
-	public String getIp() {
+	public char getIp() {
 		return ip;
 	}
-	public void setIp(String ip) {
+	public void setIp(char ip) {
 		this.ip = ip;
 	}
 	public double getRn() {
