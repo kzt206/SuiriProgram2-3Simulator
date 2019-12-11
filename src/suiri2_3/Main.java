@@ -14,6 +14,8 @@ public class Main {
 		IMAX = fr.getIMAX();
 		JMAX = fr.getJMAX();
 		
+		System.out.println("Test via hp");
+		
 //		System.out.println(arrayFC);
 		System.out.println("Main.java :"+arrayFC.get(10).get(18)); //get(j or y).get(i or x)
 //		IMAX = arrayFC.get(0).size();
