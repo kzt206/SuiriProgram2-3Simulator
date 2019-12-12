@@ -16,7 +16,7 @@ public class FileGeo2dRead {
 	
 	ArrayList<ArrayList<FloodCell>> arraysFCell = new ArrayList<ArrayList<FloodCell>>();
 	
-	public void getData() {
+	public FileGeo2dRead() {
 		try {
 			File file = new File("GEO2D.DAT");
 			BufferedReader br = new BufferedReader(new FileReader(file));
@@ -124,6 +124,11 @@ public class FileGeo2dRead {
 				// Close file.
 				br.close();
 				
+				// make IP,ZB,RN arrays
+				IP = new char[IMAX][JMAX];
+				ZB = new double[IMAX][JMAX];
+				RN = new double[IMAX][JMAX];
+				
 				for(int i = 0; i<IMAX;i++) {
 					for(int j= 0 ;j<JMAX;j++) {
 						IP[i][j] = arraysFCell.get(j).get(i).getIp();
@@ -142,6 +147,18 @@ public class FileGeo2dRead {
 //		return arraysFCell;
 	}
 
+	
+	public char[][] getIP(){
+		return IP;
+	}
+	
+	public double[][] getZB(){
+		return ZB;
+	}
+	
+	public double[][] getRN(){
+		return RN;
+	}
 	public int getIMAX() {
 		return this.IMAX;
 	}

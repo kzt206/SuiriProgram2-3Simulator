@@ -6,21 +6,24 @@ public class Main {
 	public static void main(String... args) {
 		FileRead fr = new FileRead();
 		FileGeo2dRead fGeo2dRead = new FileGeo2dRead();
-		fGeo2dRead.getData();
+		int IMAX = fGeo2dRead.getIMAX();
+		int JMAX = fGeo2dRead.getJMAX();
+		
+		char[][] IP = fGeo2dRead.getIP();
+		double[][] ZB = fGeo2dRead.getZB();
+		double[][] RN = fGeo2dRead.getRN();
 		
 		ArrayList<ArrayList<FloodCell>> arrayFC = new ArrayList<ArrayList<FloodCell>>();
-		int IMAX,JMAX;
 		
 		
 		arrayFC = fr.getData();
-		IMAX = fr.getIMAX();
-		JMAX = fr.getJMAX();
+//		IMAX = fr.getIMAX();
+//		JMAX = fr.getJMAX();
 		
 
-		System.out.println("Test via hp");
-		
 //		System.out.println(arrayFC);
 		System.out.println("Main.java :"+arrayFC.get(10).get(18)); //get(j or y).get(i or x)
+		System.out.println("Main java2:"+IP[18][10]+" "+ZB[18][10]+" "+RN[18][10]);
 //		IMAX = arrayFC.get(0).size();
 //		JMAX = arrayFC.size();
 		System.out.printf("Main.java :IMAX:%d, JMAX:%d\n", IMAX, JMAX);
