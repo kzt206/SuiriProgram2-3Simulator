@@ -1,9 +1,9 @@
 package suiri2_3;
 
-import java.util.ArrayList;
-
 public class Main {
 	public static void main(String... args) {
+		
+		//Read GEO2D.DAT
 		FileRead fr = new FileRead();
 		FileGeo2dRead fGeo2dRead = new FileGeo2dRead();
 		int IMAX = fGeo2dRead.getIMAX();
@@ -13,20 +13,8 @@ public class Main {
 		double[][] ZB = fGeo2dRead.getZB();
 		double[][] RN = fGeo2dRead.getRN();
 		
-		ArrayList<ArrayList<FloodCell>> arrayFC = new ArrayList<ArrayList<FloodCell>>();
-		
-		
-		arrayFC = fr.getData();
-//		IMAX = fr.getIMAX();
-//		JMAX = fr.getJMAX();
-		
-
-//		System.out.println(arrayFC);
-		System.out.println("Main.java :"+arrayFC.get(10).get(18)); //get(j or y).get(i or x)
-		System.out.println("Main java2:"+IP[18][10]+" "+ZB[18][10]+" "+RN[18][10]);
-//		IMAX = arrayFC.get(0).size();
-//		JMAX = arrayFC.size();
-		System.out.printf("Main.java :IMAX:%d, JMAX:%d\n", IMAX, JMAX);
+//		System.out.println("Main java2:"+IP[18][10]+" "+ZB[18][10]+" "+RN[18][10]);
+//		System.out.printf("Main.java :IMAX:%d, JMAX:%d\n", IMAX, JMAX);
 		
 		//Data block
 		double DX = 285.44;
@@ -41,10 +29,11 @@ public class Main {
 		
 		//Set Break Point
 		//Chage of IP for LEVEE-Break Point
-		arrayFC.get(JBR).get(IBR).setIp('B');
+		IP[IBR][JBR]= 'B';
 		
+		
+		//Read FLOOD.DAT
 		FileFloodRead ffRead = new FileFloodRead();
-		ffRead.readData();
 		int NHT = ffRead.getNHT();
 		double TRLX = ffRead.getTRLX();
 		double[] QHYD = ffRead.getFloodQ();

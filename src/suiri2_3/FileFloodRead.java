@@ -31,7 +31,7 @@ public class FileFloodRead {
 		return floodQ;
 	}
 	
-	public void readData() {
+	public FileFloodRead() {
 		
 		
 		try {
