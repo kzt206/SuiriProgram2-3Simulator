@@ -4,7 +4,6 @@ public class Main {
 	public static void main(String... args) {
 		
 		//Read GEO2D.DAT
-		FileRead fr = new FileRead();
 		FileGeo2dRead fGeo2dRead = new FileGeo2dRead();
 		int IMAX = fGeo2dRead.getIMAX();
 		int JMAX = fGeo2dRead.getJMAX();
@@ -28,7 +27,7 @@ public class Main {
 		int JBRD = 0;
 		
 		//Set Break Point
-		//Chage of IP for LEVEE-Break Point
+		//Change of IP for LEVEE-Break Point
 		IP[IBR][JBR]= 'B';
 		
 		
@@ -56,6 +55,36 @@ public class Main {
 		char[][] IFROF = new char[IMAX][JMAX];
 		char[][] JFROF = new char[IMAX][JMAX];
 		double[][] RNGX = new double[IMAX][JMAX];
+		for(int i = 0;i<IMAX;i++) {
+			for(int j =0;j<JMAX;j++) {
+				SMO[i][j] = 0.0;
+				SNO[i][j] = 0.0;
+				HO[i][j] = 0.0;
+				ZS[i][j] = 0.0;
+				SMN[i][j] = 0.0;
+				SNN[i][j] = 0.0;
+				HN[i][j] = 0.0;
+				SMXCV[i][j] = 0.0;
+				SNYCV[i][j] = 0.0;
+				HCV[i][j] = 0.0;
+				CUM[i][j] = 0.0;
+				CVM[i][j] = 0.0;
+				CUN[i][j] = 0.0;
+				CVN[i][j] = 0.0;
+				IFROF[i][j] = 'N';
+				JFROF[i][j] = 'N';
+				if(i != 0) {
+					if(IP[i-1][j] == 'I') {
+						RNGX[i][j]=Math.pow(((RN[i][j]+RN[i-1][j])/2.0),2.)*G*DT;
+					}else {
+						RNGX[i][j]=Math.pow((RN[i][j]),2.)*G*DT;
+					}
+				}else {
+					RNGX[i][j]=Math.pow((RN[i][j]),2.)*G*DT;
+				}
+			}
+		}
+		
 		
 	}
 }
