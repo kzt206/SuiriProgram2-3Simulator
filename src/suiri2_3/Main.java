@@ -3,6 +3,8 @@ package suiri2_3;
 public class Main {
 	public static void main(String... args) {
 
+		
+		//BEGIN of Subroutine START
 		// Read GEO2D.DAT
 		FileGeo2dRead fGeo2dRead = new FileGeo2dRead();
 		int IMAX = fGeo2dRead.getIMAX();
@@ -93,6 +95,14 @@ public class Main {
 				}
 			}
 		}
+		//Constants
+		double DT2 = DT*2.0;
+		double DT2DX = DT*2.0/DX;
+		double DT2DY = DT*2.0/DY;
+		double DTGDX = DT*G/DX*2.0;
+		double DTGDY = DT*G/DY*2.0;
+		double DXDY = DX*DY;
+		// END of Subroutine START
 
 	}
 }
