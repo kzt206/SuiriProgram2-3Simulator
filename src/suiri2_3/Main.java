@@ -103,6 +103,16 @@ public class Main {
 		double DTGDY = DT*G/DY*2.0;
 		double DXDY = DX*DY;
 		// END of Subroutine START
+		
+		double NFINAL = (NHT-1)*3600./DT2;
+		
+		int NSTEP = 0;
+		double TIME = NSTEP*DT2;
+		
+		//OUTPUTFILE
+		//
+		
+		
 
 	}
 }
