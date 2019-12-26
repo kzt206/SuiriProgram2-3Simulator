@@ -122,7 +122,26 @@ public class Main {
 		double VIN = 0.0;
 		double S0 = 0.0;
 		// GOTO 400
-		double N1 = NSTEP/NPRINT;
+		int N1 = NSTEP/NPRINT;
+		if(NSTEP != N1*NPRINT) {
+			//GOTO 450
+		}else {
+			//Check of water volume
+			double SN = 0.0;
+			for(int i = 0;i<IMAX;i++) {
+				for(int j = 0;j<JMAX;j++) {
+					if(IP[i][j]=='M' || IP[i][j]=='B') {
+						//GOTO 10
+						continue;
+					}else {
+						SN = SN + HO[i][j];
+					}
+				}
+			}
+			SN = SN*DXDY;
+			double SOVIN = S0 + VIN;
+			
+		}
 		
 
 	}
