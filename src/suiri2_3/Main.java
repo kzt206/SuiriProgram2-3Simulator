@@ -3,6 +3,11 @@ package suiri2_3;
 public class Main {
 	public static void main(String... args) {
 
+		//NPRINT : INTERVAL for PRINT OUTPUT
+		//NFILE  : INTERVAL for FILE OUTPUT
+		//NFILE must be interger times of NPRINT
+		int NPRINT = 180;
+		int NFILE = 360;
 		
 		//BEGIN of Subroutine START
 		// Read GEO2D.DAT
@@ -111,7 +116,13 @@ public class Main {
 		
 		//OUTPUTFILE
 		//
+		// coding later
 		
+		//Check of water volume
+		double VIN = 0.0;
+		double S0 = 0.0;
+		// GOTO 400
+		double N1 = NSTEP/NPRINT;
 		
 
 	}
