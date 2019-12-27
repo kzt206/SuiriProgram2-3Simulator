@@ -32,7 +32,8 @@ public class Main {
 		int JBR = 42 - 1;
 		int IBRD = -1;
 		int JBRD = 0;
-
+		double QBR = 0.0;
+		
 		// Set Break Point
 		// Change of IP for LEVEE-Break Point
 		IP[IBR][JBR] = 'B';
@@ -125,6 +126,17 @@ public class Main {
 		int N1 = NSTEP/NPRINT;
 		if(NSTEP != N1*NPRINT) {
 			//GOTO 450
+			if(NSTEP < NFINAL) {
+				// GOTO 300
+				NSTEP += 1;
+				TIME = NSTEP * DT2;
+				qbreak(TIME,QBR);
+				indflw(NSTEP,TIME);
+				VIN += QBR*DT2;
+				
+			}else {
+				System.out.println("Successfully ended.");
+			}
 		}else {
 			//Check of water volume
 			double SN = 0.0;
@@ -144,5 +156,13 @@ public class Main {
 		}
 		
 
+	}
+	
+	static void qbreak(double TIME,double QBR) {
+		
+	}
+	
+	static void indflw(int NSTEP,double TIME) {
+		
 	}
 }
