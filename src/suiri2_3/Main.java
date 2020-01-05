@@ -1,6 +1,11 @@
 package suiri2_3;
 
 public class Main {
+	
+	static int NHT;
+	static double TRLX;
+	static double[] QHYD;
+	
 	public static void main(String... args) {
 
 		//NPRINT : INTERVAL for PRINT OUTPUT
@@ -40,9 +45,10 @@ public class Main {
 
 		// Read FLOOD.DAT
 		FileFloodRead ffRead = new FileFloodRead();
-		int NHT = ffRead.getNHT();
-		double TRLX = ffRead.getTRLX();
-		double[] QHYD = ffRead.getFloodQ();
+		NHT = ffRead.getNHT();
+//		System.out.println("NHT: " + NHT);
+		TRLX = ffRead.getTRLX();
+		QHYD = ffRead.getFloodQ();
 
 		// Initialization of Variavles
 		double[][] SMO = new double[IMAX][JMAX];
