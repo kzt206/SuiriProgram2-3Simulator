@@ -1,5 +1,7 @@
 package suiri2_3;
 
+import javax.xml.parsers.DocumentBuilder;
+
 public class Main {
 	
 	static int NHT;
@@ -116,10 +118,11 @@ public class Main {
 		double DXDY = DX*DY;
 		// END of Subroutine START
 		
-		double NFINAL = (NHT-1)*3600./DT2;
+		double NFINAL = (NHT-1)*3600./DT2; // original
+//		double NFINAL = (NHT)*3600./DT2;
 		
-		int NSTEP = 0;
-		double TIME = NSTEP*DT2;
+//		int NSTEP = 0;
+//		double TIME = NSTEP*DT2;
 		
 		//OUTPUTFILE
 		//
@@ -129,43 +132,65 @@ public class Main {
 		double VIN = 0.0;
 		double S0 = 0.0;
 		// GOTO 400
-		int N1 = NSTEP/NPRINT;
-		if(NSTEP != N1*NPRINT) {
-			//GOTO 450
-			if(NSTEP < NFINAL) {
-				// GOTO 300
-				NSTEP += 1;
-				TIME = NSTEP * DT2;
-				qbreak(TIME,QBR);
-				indflw(NSTEP,TIME);
-				VIN += QBR*DT2;
-				
-			}else {
-				System.out.println("Successfully ended.");
-			}
-		}else {
-			//Check of water volume
-			double SN = 0.0;
-			for(int i = 0;i<IMAX;i++) {
-				for(int j = 0;j<JMAX;j++) {
-					if(IP[i][j]=='M' || IP[i][j]=='B') {
-						//GOTO 10
-						continue;
-					}else {
-						SN = SN + HO[i][j];
-					}
-				}
-			}
-			SN = SN*DXDY;
-			double SOVIN = S0 + VIN;
-			
+//		int N1 = NSTEP/NPRINT;
+		for(int NSTEP = 0;NSTEP<NFINAL;NSTEP++) {
+			double TIME = NSTEP*DT2;
+			qbreak(TIME, QBR);
 		}
+//		if(NSTEP != N1*NPRINT) {
+//			//GOTO 450
+//			if(NSTEP < NFINAL) {
+//				// GOTO 300
+//				NSTEP += 1;
+//				TIME = NSTEP * DT2;
+//				qbreak(TIME,QBR);
+//				indflw(NSTEP,TIME);
+//				VIN += QBR*DT2;
+//				
+//			}else {
+//				System.out.println("Successfully ended.");
+//			}
+//		}else {
+//			//Check of water volume
+//			double SN = 0.0;
+//			for(int i = 0;i<IMAX;i++) {
+//				for(int j = 0;j<JMAX;j++) {
+//					if(IP[i][j]=='M' || IP[i][j]=='B') {
+//						//GOTO 10
+//						continue;
+//					}else {
+//						SN = SN + HO[i][j];
+//					}
+//				}
+//			}
+//			SN = SN*DXDY;
+//			double SOVIN = S0 + VIN;
+//			
+//		}
 		
 
 	}
 	
 	static void qbreak(double TIME,double QBR) {
-		
+//		System.out.println("Start qbreak().");
+//		for(double d : QHYD) {
+//			System.out.println(d);
+//		}
+//		System.out.println("End qbreak()");
+		if(TIME < TRLX) {
+			QBR = QHYD[0]/TRLX * TIME;
+		}else {
+			double THR = TIME/3600.;
+			double IT = THR+1.0;
+			if(IT >= NHT) {
+				IT=NHT-1.;
+			}
+			double THR0 = IT-1.;
+			int it = (int)IT;
+			QBR = (QHYD[it]-QHYD[it-1])*(THR-THR0)+QHYD[it];
+		}
+//		System.out.println("TIME: " + TIME + " QBR: "+ QBR);
+		if(TIME<1300) System.out.println("TIME: " + TIME + " QBR: "+ QBR);
 	}
 	
 	static void indflw(int NSTEP,double TIME) {
