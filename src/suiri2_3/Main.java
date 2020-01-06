@@ -187,10 +187,10 @@ public class Main {
 			}
 			double THR0 = IT-1.;
 			int it = (int)IT;
-			QBR = (QHYD[it]-QHYD[it-1])*(THR-THR0)+QHYD[it];
+			QBR = (QHYD[it]-QHYD[it-1])*(THR-THR0)+QHYD[it-1];
 		}
 //		System.out.println("TIME: " + TIME + " QBR: "+ QBR);
-		if(TIME<1300) System.out.println("TIME: " + TIME + " QBR: "+ QBR);
+		if(TIME<4000) System.out.println("TIME: " + TIME + " QBR: "+ QBR);
 	}
 	
 	static void indflw(int NSTEP,double TIME) {
