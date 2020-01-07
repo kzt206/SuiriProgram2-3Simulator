@@ -1,46 +1,79 @@
 package suiri2_3;
 
+import java.util.concurrent.Callable;
+
 import javax.xml.parsers.DocumentBuilder;
 
 public class Main {
-	
+
+	// Global variables for qbreak()
 	static int NHT;
 	static double TRLX;
 	static double[] QHYD;
+
+	// Global variables for indflw()
+	static int IMAX, JMAX;
+	static double DT, DX, DY, G, EPS, DT2DX, DT2DY, DTGDX, DTGDY, DT2, DXDY;
+	static int IBR, JBR, IBRD, JBRD;
+	static double QBR;
+
+	static char[][] IP;
+	static double[][] ZB;
+	static double[][] RN;
+	
+	static double[][] SMO;
+	static double[][] SNO;
+	static double[][] HO;
+	static double[][] ZS;
+	static double[][] SMN;
+	static double[][] SNN;
+	static double[][] HN;
+	static double[][] SMXCV;
+	static double[][] SNYCV;
+	static double[][] HCV;
+	static double[][] CUM;
+	static double[][] CVM;
+	static double[][] CUN;
+	static double[][] CVN;
+	static char[][] IFROF;
+	static char[][] JFROF;
+	static double[][] RNGX;
+	static double[][] RNGY;
+
 	
 	public static void main(String... args) {
 
-		//NPRINT : INTERVAL for PRINT OUTPUT
-		//NFILE  : INTERVAL for FILE OUTPUT
-		//NFILE must be interger times of NPRINT
+		// NPRINT : INTERVAL for PRINT OUTPUT
+		// NFILE : INTERVAL for FILE OUTPUT
+		// NFILE must be integer times of NPRINT
 		int NPRINT = 180;
 		int NFILE = 360;
-		
-		//BEGIN of Subroutine START
+
+		// BEGIN of Subroutine START
 		// Read GEO2D.DAT
 		FileGeo2dRead fGeo2dRead = new FileGeo2dRead();
-		int IMAX = fGeo2dRead.getIMAX();
-		int JMAX = fGeo2dRead.getJMAX();
+		IMAX = fGeo2dRead.getIMAX();
+		JMAX = fGeo2dRead.getJMAX();
 
 		char[][] IP = fGeo2dRead.getIP();
 		double[][] ZB = fGeo2dRead.getZB();
 		double[][] RN = fGeo2dRead.getRN();
 
-//		System.out.println("Main java2:"+IP[18][10]+" "+ZB[18][10]+" "+RN[18][10]);
-//		System.out.printf("Main.java :IMAX:%d, JMAX:%d\n", IMAX, JMAX);
+		// System.out.println("Main java2:"+IP[18][10]+" "+ZB[18][10]+" "+RN[18][10]);
+		// System.out.printf("Main.java :IMAX:%d, JMAX:%d\n", IMAX, JMAX);
 
 		// Data block
-		double DX = 285.44;
-		double DY = 231.0;
-		double G = 9.8;
-		double EPS = 0.001;
-		double DT = 2.5;
-		int IBR = 29 - 1;
-		int JBR = 42 - 1;
-		int IBRD = -1;
-		int JBRD = 0;
-		double QBR = 0.0;
-		
+		DX = 285.44;
+		DY = 231.0;
+		G = 9.8;
+		EPS = 0.001;
+		DT = 2.5;
+		IBR = 29 - 1;
+		JBR = 42 - 1;
+		IBRD = -1;
+		JBRD = 0;
+		QBR = 0.0;
+
 		// Set Break Point
 		// Change of IP for LEVEE-Break Point
 		IP[IBR][JBR] = 'B';
@@ -48,29 +81,29 @@ public class Main {
 		// Read FLOOD.DAT
 		FileFloodRead ffRead = new FileFloodRead();
 		NHT = ffRead.getNHT();
-//		System.out.println("NHT: " + NHT);
+		// System.out.println("NHT: " + NHT);
 		TRLX = ffRead.getTRLX();
 		QHYD = ffRead.getFloodQ();
 
-		// Initialization of Variavles
-		double[][] SMO = new double[IMAX][JMAX];
-		double[][] SNO = new double[IMAX][JMAX];
-		double[][] HO = new double[IMAX][JMAX];
-		double[][] ZS = new double[IMAX][JMAX];
-		double[][] SMN = new double[IMAX][JMAX];
-		double[][] SNN = new double[IMAX][JMAX];
-		double[][] HN = new double[IMAX][JMAX];
-		double[][] SMXCV = new double[IMAX][JMAX];
-		double[][] SNYCV = new double[IMAX][JMAX];
-		double[][] HCV = new double[IMAX][JMAX];
-		double[][] CUM = new double[IMAX][JMAX];
-		double[][] CVM = new double[IMAX][JMAX];
-		double[][] CUN = new double[IMAX][JMAX];
-		double[][] CVN = new double[IMAX][JMAX];
-		char[][] IFROF = new char[IMAX][JMAX];
-		char[][] JFROF = new char[IMAX][JMAX];
-		double[][] RNGX = new double[IMAX][JMAX];
-		double[][] RNGY = new double[IMAX][JMAX];
+		// Initialization of Variables
+		SMO = new double[IMAX][JMAX];
+		SNO = new double[IMAX][JMAX];
+		HO = new double[IMAX][JMAX];
+		ZS = new double[IMAX][JMAX];
+		SMN = new double[IMAX][JMAX];
+		SNN = new double[IMAX][JMAX];
+		HN = new double[IMAX][JMAX];
+		SMXCV = new double[IMAX][JMAX];
+		SNYCV = new double[IMAX][JMAX];
+		HCV = new double[IMAX][JMAX];
+		CUM = new double[IMAX][JMAX];
+		CVM = new double[IMAX][JMAX];
+		CUN = new double[IMAX][JMAX];
+		CVN = new double[IMAX][JMAX];
+		IFROF = new char[IMAX][JMAX];
+		JFROF = new char[IMAX][JMAX];
+		RNGX = new double[IMAX][JMAX];
+		RNGY = new double[IMAX][JMAX];
 		for (int i = 0; i < IMAX; i++) {
 			for (int j = 0; j < JMAX; j++) {
 				SMO[i][j] = 0.0;
@@ -109,93 +142,107 @@ public class Main {
 				}
 			}
 		}
-		//Constants
-		double DT2 = DT*2.0;
-		double DT2DX = DT*2.0/DX;
-		double DT2DY = DT*2.0/DY;
-		double DTGDX = DT*G/DX*2.0;
-		double DTGDY = DT*G/DY*2.0;
-		double DXDY = DX*DY;
+		// Constants
+		DT2 = DT * 2.0;
+		DT2DX = DT * 2.0 / DX;
+		DT2DY = DT * 2.0 / DY;
+		DTGDX = DT * G / DX * 2.0;
+		DTGDY = DT * G / DY * 2.0;
+		DXDY = DX * DY;
 		// END of Subroutine START
-		
-		double NFINAL = (NHT-1)*3600./DT2; // original
-//		double NFINAL = (NHT)*3600./DT2;
-		
-//		int NSTEP = 0;
-//		double TIME = NSTEP*DT2;
-		
-		//OUTPUTFILE
+
+		double NFINAL = (NHT - 1) * 3600. / DT2; // original
+		// double NFINAL = (NHT)*3600./DT2;
+
+		// int NSTEP = 0;
+		// double TIME = NSTEP*DT2;
+
+		// OUTPUTFILE
 		//
 		// coding later
-		
-		//Check of water volume
+
+		// Check of water volume
 		double VIN = 0.0;
 		double S0 = 0.0;
 		// GOTO 400
-//		int N1 = NSTEP/NPRINT;
-		for(int NSTEP = 0;NSTEP<NFINAL;NSTEP++) {
-			double TIME = NSTEP*DT2;
+		// int N1 = NSTEP/NPRINT;
+		for (int NSTEP = 0; NSTEP < NFINAL; NSTEP++) {
+			double TIME = NSTEP * DT2;
 			QBR = qbreak(TIME, QBR);
-			
+
 		}
-//		if(NSTEP != N1*NPRINT) {
-//			//GOTO 450
-//			if(NSTEP < NFINAL) {
-//				// GOTO 300
-//				NSTEP += 1;
-//				TIME = NSTEP * DT2;
-//				qbreak(TIME,QBR);
-//				indflw(NSTEP,TIME);
-//				VIN += QBR*DT2;
-//				
-//			}else {
-//				System.out.println("Successfully ended.");
-//			}
-//		}else {
-//			//Check of water volume
-//			double SN = 0.0;
-//			for(int i = 0;i<IMAX;i++) {
-//				for(int j = 0;j<JMAX;j++) {
-//					if(IP[i][j]=='M' || IP[i][j]=='B') {
-//						//GOTO 10
-//						continue;
-//					}else {
-//						SN = SN + HO[i][j];
-//					}
-//				}
-//			}
-//			SN = SN*DXDY;
-//			double SOVIN = S0 + VIN;
-//			
-//		}
-		
+		// if(NSTEP != N1*NPRINT) {
+		// //GOTO 450
+		// if(NSTEP < NFINAL) {
+		// // GOTO 300
+		// NSTEP += 1;
+		// TIME = NSTEP * DT2;
+		// qbreak(TIME,QBR);
+		// indflw(NSTEP,TIME);
+		// VIN += QBR*DT2;
+		//
+		// }else {
+		// System.out.println("Successfully ended.");
+		// }
+		// }else {
+		// //Check of water volume
+		// double SN = 0.0;
+		// for(int i = 0;i<IMAX;i++) {
+		// for(int j = 0;j<JMAX;j++) {
+		// if(IP[i][j]=='M' || IP[i][j]=='B') {
+		// //GOTO 10
+		// continue;
+		// }else {
+		// SN = SN + HO[i][j];
+		// }
+		// }
+		// }
+		// SN = SN*DXDY;
+		// double SOVIN = S0 + VIN;
+		//
+		// }
 
 	}
-	
-	static double qbreak(double TIME,double QBR) {
-//		System.out.println("Start qbreak().");
-//		for(double d : QHYD) {
-//			System.out.println(d);
-//		}
-//		System.out.println("End qbreak()");
-		if(TIME < TRLX) {
-			QBR = QHYD[0]/TRLX * TIME;
-		}else {
-			double THR = TIME/3600.;
-			double IT = THR+1.0;
-			if(IT >= NHT) {
-				IT=NHT-1.;
+
+	static double qbreak(double TIME, double QBR) {
+		// System.out.println("Start qbreak().");
+		// for(double d : QHYD) {
+		// System.out.println(d);
+		// }
+		// System.out.println("End qbreak()");
+		if (TIME < TRLX) {
+			QBR = QHYD[0] / TRLX * TIME;
+		} else {
+			double THR = TIME / 3600.;
+			double IT = THR + 1.0;
+			if (IT >= NHT) {
+				IT = NHT - 1.;
 			}
-			double THR0 = IT-1.;
-			int it = (int)IT;
-			QBR = (QHYD[it]-QHYD[it-1])*(THR-THR0)+QHYD[it-1];
+			double THR0 = IT - 1.;
+			int it = (int) IT;
+			QBR = (QHYD[it] - QHYD[it - 1]) * (THR - THR0) + QHYD[it - 1];
 		}
-//		System.out.println("TIME: " + TIME + " QBR: "+ QBR);
-//		if(TIME<4000) System.out.println("TIME: " + TIME + " QBR: "+ QBR);
+		// System.out.println("TIME: " + TIME + " QBR: "+ QBR);
+		// if(TIME<4000) System.out.println("TIME: " + TIME + " QBR: "+ QBR);
 		return QBR;
 	}
+
+	static void indflw(int NSTEP, double TIME) {
+		frovf();
+		convx();
+		convy();
+	}
 	
-	static void indflw(int NSTEP,double TIME) {
+	static void frovf() {
 		
 	}
+	
+	static void convx() {
+		
+	}
+	
+	static void convy() {
+		
+	}
+	
 }
