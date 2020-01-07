@@ -233,7 +233,14 @@ public class Main {
 		convy();
 	}
 	
+	//’i—Ž‚¿•”•ª‚Ì—¬—ÊŒvŽZ
 	static void frovf() {
+		for(int i=0;i<IMAX;i++) {
+			for(int j=0;j<JMAX;j++) {
+				if(i==1 || j==1) continue;
+				if(IP[i][j]=='M' || IP[i][j]=='B') continue;
+			}
+		}
 		
 	}
 	
