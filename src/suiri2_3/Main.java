@@ -1,6 +1,7 @@
 package suiri2_3;
 
 import java.util.concurrent.Callable;
+import java.util.zip.Inflater;
 
 import javax.xml.parsers.DocumentBuilder;
 
@@ -169,6 +170,7 @@ public class Main {
 		for (int NSTEP = 0; NSTEP < NFINAL; NSTEP++) {
 			double TIME = NSTEP * DT2;
 			QBR = qbreak(TIME, QBR);
+			indflw(NSTEP,TIME);
 
 		}
 		// if(NSTEP != N1*NPRINT) {
@@ -239,7 +241,9 @@ public class Main {
 			for(int j=0;j<JMAX;j++) {
 				if(i==1 || j==1) continue;
 				if(IP[i][j]=='M' || IP[i][j]=='B') continue;
+				System.out.println(" " + i + j + IP[i][j]);
 			}
+//			System.out.println(" " + i + j + IP[i][j]);
 		}
 		
 	}
