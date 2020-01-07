@@ -135,7 +135,8 @@ public class Main {
 //		int N1 = NSTEP/NPRINT;
 		for(int NSTEP = 0;NSTEP<NFINAL;NSTEP++) {
 			double TIME = NSTEP*DT2;
-			qbreak(TIME, QBR);
+			QBR = qbreak(TIME, QBR);
+			
 		}
 //		if(NSTEP != N1*NPRINT) {
 //			//GOTO 450
@@ -171,7 +172,7 @@ public class Main {
 
 	}
 	
-	static void qbreak(double TIME,double QBR) {
+	static double qbreak(double TIME,double QBR) {
 //		System.out.println("Start qbreak().");
 //		for(double d : QHYD) {
 //			System.out.println(d);
@@ -190,7 +191,8 @@ public class Main {
 			QBR = (QHYD[it]-QHYD[it-1])*(THR-THR0)+QHYD[it-1];
 		}
 //		System.out.println("TIME: " + TIME + " QBR: "+ QBR);
-		if(TIME<4000) System.out.println("TIME: " + TIME + " QBR: "+ QBR);
+//		if(TIME<4000) System.out.println("TIME: " + TIME + " QBR: "+ QBR);
+		return QBR;
 	}
 	
 	static void indflw(int NSTEP,double TIME) {
