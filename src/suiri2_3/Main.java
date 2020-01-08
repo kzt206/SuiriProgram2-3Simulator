@@ -171,6 +171,14 @@ public class Main {
 			QBR = qbreak(TIME, QBR);
 			System.out.println("NSTEP:" + NSTEP);
 			indflw(NSTEP, TIME);
+			
+			VIN=VIN+QBR*DT2;
+			
+			// variables for convective term computaiton
+			
+			
+			
+			// replacement of variables for next step
 
 		}
 		// if(NSTEP != N1*NPRINT) {
@@ -307,11 +315,27 @@ public class Main {
 	}
 
 	static void convx() {
+		double ESPCV = 0.1;
+		
+		for(int i = 0;i<IMAX;i++) {
+			for(int j = 0 ;j<JMAX;j++) {
+				if(i!=1 && j!=1) {
+					//convection term : D(UM)/DX on (I+1/2,J)-(I+1/2,j+1)
+					
+					
+					//convection term : D(VM)/DX on (I-1/2,j)-(I+1/2,J)
+					
+				}
+			}
+		}
 
 	}
 
 	static void convy() {
-
+		double ESPCV = 0.1;
+		
+		
+		
 	}
 
 }
