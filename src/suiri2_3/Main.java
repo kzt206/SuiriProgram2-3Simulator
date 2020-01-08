@@ -21,7 +21,7 @@ public class Main {
 	static char[][] IP;
 	static double[][] ZB;
 	static double[][] RN;
-	
+
 	static double[][] SMO;
 	static double[][] SNO;
 	static double[][] HO;
@@ -41,7 +41,6 @@ public class Main {
 	static double[][] RNGX;
 	static double[][] RNGY;
 
-	
 	public static void main(String... args) {
 
 		// NPRINT : INTERVAL for PRINT OUTPUT
@@ -56,9 +55,9 @@ public class Main {
 		IMAX = fGeo2dRead.getIMAX();
 		JMAX = fGeo2dRead.getJMAX();
 
-		char[][] IP = fGeo2dRead.getIP();
-		double[][] ZB = fGeo2dRead.getZB();
-		double[][] RN = fGeo2dRead.getRN();
+		IP = fGeo2dRead.getIP();
+		ZB = fGeo2dRead.getZB();
+		RN = fGeo2dRead.getRN();
 
 		// System.out.println("Main java2:"+IP[18][10]+" "+ZB[18][10]+" "+RN[18][10]);
 		// System.out.printf("Main.java :IMAX:%d, JMAX:%d\n", IMAX, JMAX);
@@ -170,7 +169,8 @@ public class Main {
 		for (int NSTEP = 0; NSTEP < NFINAL; NSTEP++) {
 			double TIME = NSTEP * DT2;
 			QBR = qbreak(TIME, QBR);
-			indflw(NSTEP,TIME);
+			System.out.println("NSTEP:" + NSTEP);
+			indflw(NSTEP, TIME);
 
 		}
 		// if(NSTEP != N1*NPRINT) {
@@ -234,26 +234,84 @@ public class Main {
 		convx();
 		convy();
 	}
-	
-	//’i—Ž‚¿•”•ª‚Ì—¬—ÊŒvŽZ
+
+	// ’i—Ž‚¿•”•ª‚Ì—¬—ÊŒvŽZ
 	static void frovf() {
-		for(int i=0;i<IMAX;i++) {
-			for(int j=0;j<JMAX;j++) {
-				if(i==1 || j==1) continue;
-				if(IP[i][j]=='M' || IP[i][j]=='B') continue;
-				System.out.println(" " + i + j + IP[i][j]);
+		double CQ = 0.544;
+		for (int i = 0; i < IMAX; i++) {
+			for (int j = 0; j < JMAX; j++) {
+				if (i != 0 && j != 0) {
+					if (IP[i][j] != 'M' && IP[i][j] != 'B') {
+//						System.out.println("i:" + i +"j:"+ j +"IP:"+ IP[i][j]);
+
+						// X-Direction
+						if (IP[i - 1][j] != 'M') {
+							if (ZB[i - 1][j] < ZS[i][j]) {
+								if (ZB[i][j] < ZS[i - 1][j]) {
+									IFROF[i][j] = 'N';
+								} else {
+									double ID = -1.;
+									double HH = HO[i][j];
+									IFROF[i][j] = 'Y';
+									if (HH > EPS) {
+										SMN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
+									} else {
+										SMN[i][j] = 0.0;
+									}
+								}
+							} else {
+								double ID = 1.;
+								double HH = HO[i - 1][j];
+								IFROF[i][j] = 'Y';
+								if (HH > EPS) {
+									SMN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
+								} else {
+									SMN[i][j] = 0.0;
+								}
+							}
+						}
+
+						// Y-Direction
+						if (IP[i][j - 1] != 'M') {
+							if (ZB[i][j - 1] < ZS[i][j]) {
+								if (ZB[i][j] < ZS[i][j - 1]) {
+									JFROF[i][j] = 'N';
+								} else {
+									double ID = -1.;
+									double HH = HO[i][j];
+									IFROF[i][j] = 'Y';
+									if (HH > EPS) {
+										SMN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
+									} else {
+										SMN[i][j] = 0.0;
+									}
+								}
+
+							} else {
+								double ID = 1.;
+								double HH = HO[i][j - 1];
+								IFROF[i][j] = 'Y';
+								if (HH > EPS) {
+									SMN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
+								} else {
+									SMN[i][j] = 0.0;
+								}
+							}
+
+						}
+					}
+				}
 			}
-//			System.out.println(" " + i + j + IP[i][j]);
 		}
-		
+
 	}
-	
+
 	static void convx() {
-		
+
 	}
-	
+
 	static void convy() {
-		
+
 	}
-	
+
 }
