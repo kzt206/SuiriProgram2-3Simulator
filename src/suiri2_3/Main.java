@@ -1,5 +1,6 @@
 package suiri2_3;
 
+import java.util.EventListenerProxy;
 import java.util.concurrent.Callable;
 import java.util.zip.Inflater;
 
@@ -171,13 +172,11 @@ public class Main {
 			QBR = qbreak(TIME, QBR);
 			System.out.println("NSTEP:" + NSTEP);
 			indflw(NSTEP, TIME);
-			
-			VIN=VIN+QBR*DT2;
-			
+
+			VIN = VIN + QBR * DT2;
+
 			// variables for convective term computaiton
-			
-			
-			
+
 			// replacement of variables for next step
 
 		}
@@ -250,7 +249,7 @@ public class Main {
 			for (int j = 0; j < JMAX; j++) {
 				if (i != 0 && j != 0) {
 					if (IP[i][j] != 'M' && IP[i][j] != 'B') {
-//						System.out.println("i:" + i +"j:"+ j +"IP:"+ IP[i][j]);
+						// System.out.println("i:" + i +"j:"+ j +"IP:"+ IP[i][j]);
 
 						// X-Direction
 						if (IP[i - 1][j] != 'M') {
@@ -316,15 +315,57 @@ public class Main {
 
 	static void convx() {
 		double ESPCV = 0.1;
-		
-		for(int i = 0;i<IMAX;i++) {
-			for(int j = 0 ;j<JMAX;j++) {
-				if(i!=1 && j!=1) {
-					//convection term : D(UM)/DX on (I+1/2,J)-(I+1/2,j+1)
-					
-					
-					//convection term : D(VM)/DX on (I-1/2,j)-(I+1/2,J)
-					
+		double HHE, HH, UEE, UU, UE;
+		double HHSW, HHSE, VSW, VSE, VS;
+
+		for (int i = 0; i < IMAX; i++) {
+			for (int j = 0; j < JMAX; j++) {
+				if (i != 1 && j != 1) {
+					// convection term : D(UM)/DX on (I+1/2,J)-(I+1/2,j+1)
+					if (IP[i][j] != 'M') {
+						HHE = (HCV[i + 1][j] + HCV[i][j]) * 0.5;
+						HH = (HCV[i][j] + HCV[i - 1][j]) * 0.5;
+						if (HHE > ESPCV) {
+							UEE = SMXCV[i + 1][j] / HHE;
+						} else {
+							UEE = 0.0;
+						}
+						if (HH > ESPCV) {
+							UU = SMXCV[i][j] / HH;
+						} else {
+							UU = 0.0;
+						}
+						UE = (UEE + UU) * 0.5;
+						if (UE < 0.0) {
+							CUM[i][j] = UE * SMXCV[i + 1][j];
+						} else {
+							CUM[i][j] = UE * SMXCV[i][j];
+						}
+
+					} else {
+						CUM[i][j] = 0.0;
+					}
+
+					// convection term : D(VM)/DX on (I-1/2,j)-(I+1/2,J)
+					HHSW = (HCV[i - 1][j] + HCV[i - 1][j - 1]) * 0.5;
+					HHSE = (HCV[i][j - 1] + HCV[i][j]) * 0.5;
+					if (HHSW > ESPCV) {
+						VSW = SNYCV[i - 1][j] / HHSW;
+					} else {
+						VSW = 0.0;
+					}
+					if (HHSE > ESPCV) {
+						VSE = SNYCV[i][j] / HHSE;
+					} else {
+						VSE = 0.0;
+					}
+					VS = (VSE+VSW)*0.5;
+					if(VS < 0.0) {
+						CVM[i][j] = VS * SMXCV[i][j]
+					}else {
+						CVM[i][j] = VS * SMXCV[i][j-1];
+					}
+
 				}
 			}
 		}
@@ -333,9 +374,7 @@ public class Main {
 
 	static void convy() {
 		double ESPCV = 0.1;
-		
-		
-		
+
 	}
 
 }
