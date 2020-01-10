@@ -374,6 +374,60 @@ public class Main {
 
 	static void convy() {
 		double ESPCV = 0.1;
+		double HHN, HH, VNN, VV, VN;
+		double HHNW, HHSW, UNW, USW, UW;
+
+		for (int i = 0; i < IMAX; i++) {
+			for (int j = 0; j < JMAX; j++) {
+				if (i != 0 && j != 0) {
+					// convection term : D(VN)/DY on (I,J+1/2)-(I+1,j+1/2)
+					if (IP[i][j] != 'M') {
+						HHN = (HCV[i + 1][j] + HCV[i][j]) * 0.5;
+						HH = (HCV[i][j] + HCV[i - 1][j]) * 0.5;
+						if (HHN > ESPCV) {
+							VNN = SNYCV[i][j+1] / HHN;
+						} else {
+							VNN = 0.0;
+						}
+						if (HH > ESPCV) {
+							VV = SNYCV[i][j] / HH;
+						} else {
+							VV = 0.0;
+						}
+						VN = (VNN + VV) * 0.5;
+						if (VN < 0.0) {
+							CVN[i][j] = VN * SNYCV[i][j+1];
+						} else {
+							CVN[i][j] = VN * SNYCV[i][j];
+						}
+
+					} else {
+						CVN[i][j] = 0.0;
+					}
+
+					// convection term : D(UN)/DX on (I,J-1/2)-(I,J+1/2)
+					HHSW = (HCV[i - 1][j] + HCV[i - 1][j - 1]) * 0.5;
+					HHSE = (HCV[i][j - 1] + HCV[i][j]) * 0.5;
+					if (HHSW > ESPCV) {
+						VSW = SNYCV[i - 1][j] / HHSW;
+					} else {
+						VSW = 0.0;
+					}
+					if (HHSE > ESPCV) {
+						VSE = SNYCV[i][j] / HHSE;
+					} else {
+						VSE = 0.0;
+					}
+					VS = (VSE+VSW)*0.5;
+					if(VS < 0.0) {
+						CVM[i][j] = VS * SMXCV[i][j];
+					}else {
+						CVM[i][j] = VS * SMXCV[i][j-1];
+					}
+
+				}
+			}
+		}
 
 	}
 
