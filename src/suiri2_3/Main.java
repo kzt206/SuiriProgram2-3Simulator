@@ -320,7 +320,7 @@ public class Main {
 
 		for (int i = 0; i < IMAX; i++) {
 			for (int j = 0; j < JMAX; j++) {
-				if (i != 1 && j != 1) {
+				if (i != 0 && j != 0) {
 					// convection term : D(UM)/DX on (I+1/2,J)-(I+1/2,j+1)
 					if (IP[i][j] != 'M') {
 						HHE = (HCV[i + 1][j] + HCV[i][j]) * 0.5;
@@ -361,7 +361,7 @@ public class Main {
 					}
 					VS = (VSE+VSW)*0.5;
 					if(VS < 0.0) {
-						CVM[i][j] = VS * SMXCV[i][j]
+						CVM[i][j] = VS * SMXCV[i][j];
 					}else {
 						CVM[i][j] = VS * SMXCV[i][j-1];
 					}
