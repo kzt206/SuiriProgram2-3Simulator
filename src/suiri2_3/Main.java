@@ -406,23 +406,23 @@ public class Main {
 					}
 
 					// convection term : D(UN)/DX on (I,J-1/2)-(I,J+1/2)
-					HHSW = (HCV[i - 1][j] + HCV[i - 1][j - 1]) * 0.5;
-					HHSE = (HCV[i][j - 1] + HCV[i][j]) * 0.5;
+					HHNW = (HCV[i - 1][j] + HCV[i][j]) * 0.5;
+					HHSW = (HCV[i][j - 1] + HCV[i-1][j-1]) * 0.5;
+					if (HHNW > ESPCV) {
+						UNW = SMXCV[i][j] / HHNW;
+					} else {
+						UNW = 0.0;
+					}
 					if (HHSW > ESPCV) {
-						VSW = SNYCV[i - 1][j] / HHSW;
+						USW = SMXCV[i][j-1] / HHSW;
 					} else {
-						VSW = 0.0;
+						USW = 0.0;
 					}
-					if (HHSE > ESPCV) {
-						VSE = SNYCV[i][j] / HHSE;
-					} else {
-						VSE = 0.0;
-					}
-					VS = (VSE+VSW)*0.5;
-					if(VS < 0.0) {
-						CVM[i][j] = VS * SMXCV[i][j];
+					UW = (UNW+USW)*0.5;
+					if(UW < 0.0) {
+						CUN[i][j] = UW * SNYCV[i][j];
 					}else {
-						CVM[i][j] = VS * SMXCV[i][j-1];
+						CUN[i][j] = UW * SNYCV[i-1][j];
 					}
 
 				}
