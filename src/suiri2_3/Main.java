@@ -241,8 +241,8 @@ public class Main {
 		frovf();
 		convx();
 		convy();
-		
-		double HH,SFM,UX,VY;
+
+		double HH, SFM, UX, VY;
 
 		// Discharge flux
 		for (int i = 0; i < IMAX; i++) {
@@ -250,47 +250,50 @@ public class Main {
 				if (i != 1 && j != 1) {
 					if (IP[i][j] != 'M' && IP[i][j] != 'B') {
 						// X-DIRECTION
-						if(IP[i-1][j]!='M') {
-							if(IFROF[i][j]!='Y') {
-								if((ZS[i][j]<=ZS[i-1][j] || HO[i][j] > EPS) &&
-										(ZS[i][j]>=ZS[i-1][j] || HO[i-1][j] > EPS)) {
-									HH=(HO[i][j] + HO[i-1][j])*.5;
-									if(HH > EPS) {
-										UX = SMO[i][j]/HH;
-										VY = (SNO[i-1][j] + SNO[i][j] + SNO[i][j+1] + SNO[i-1][j+1])*0.25/HH;
-										SFM = RNGX[i][j]*Math.sqrt(Math.pow(UX, 2.)+Math.pow(VY, 2.))/Math.pow(HH,1.333333);
-									}else {
-										//goto 12
+						if (IP[i - 1][j] != 'M') {
+							if (IFROF[i][j] != 'Y') {
+								if ((ZS[i][j] <= ZS[i - 1][j] || HO[i][j] > EPS)
+										&& (ZS[i][j] >= ZS[i - 1][j] || HO[i - 1][j] > EPS)) {
+									HH = (HO[i][j] + HO[i - 1][j]) * .5;
+									if (HH > EPS) {
+										UX = SMO[i][j] / HH;
+										VY = (SNO[i - 1][j] + SNO[i][j] + SNO[i][j + 1] + SNO[i - 1][j + 1]) * 0.25
+												/ HH;
+										SFM = RNGX[i][j] * Math.sqrt(Math.pow(UX, 2.) + Math.pow(VY, 2.))
+												/ Math.pow(HH, 1.333333);
+									} else {
+										// goto 12
 										SFM = 0.;
 									}
 									// goto 13
-									SMN[i][j] = (SMO[i][j]*(1.-SFM)-(CUM[i][j]-CUM[i-1][j])*DT2DX
-											-(CVM[i][j+1]-CVM[i][j])*DT2DY-(ZS[i][j]-ZS[i-1][j])*HH*DTGDX)/(1.+SFM);
-									if((HO[i][j]>EPS || SMN[i][j]>=0.0) && (HO[i-1][j] >EPS || SMN[i][j] >=0.0)){
-										if(Math.abs(SMN[i][j]) >= 5.0e-5) {
+									SMN[i][j] = (SMO[i][j] * (1. - SFM) - (CUM[i][j] - CUM[i - 1][j]) * DT2DX
+											- (CVM[i][j + 1] - CVM[i][j]) * DT2DY
+											- (ZS[i][j] - ZS[i - 1][j]) * HH * DTGDX) / (1. + SFM);
+									if ((HO[i][j] > EPS || SMN[i][j] >= 0.0)
+											&& (HO[i - 1][j] > EPS || SMN[i][j] >= 0.0)) {
+										if (Math.abs(SMN[i][j]) >= 5.0e-5) {
 											SMN[i][j] = 0.;
 										}
-									}else {
-										//goto 15
+									} else {
+										// goto 15
 										SMN[i][j] = 0.;
 									}
-								}else {
+								} else {
 									// goto 15
-									SMN[i][j]=0.;
+									SMN[i][j] = 0.;
 								}
-								
-								
-							}else {
-								//goto 11
-								if(Math.abs(SMN[i][j]) < 5.e-5) {
-									SMN[i][j]=0.;
+
+							} else {
+								// goto 11
+								if (Math.abs(SMN[i][j]) < 5.e-5) {
+									SMN[i][j] = 0.;
 								}
 							}
-						}else {
-							//goto 15
-							SMN[i][j]=0.;
+						} else {
+							// goto 15
+							SMN[i][j] = 0.;
 						}
-						
+
 						// Y-DIRECTION
 
 					} else {
@@ -301,11 +304,11 @@ public class Main {
 				} else {
 					// goto 10
 					continue;
-				}	
+				}
 			}
-			}
+		}
 		// Point
-		
+
 	}
 
 	// ’i—Ž‚¿•”•ª‚Ì—¬—ÊŒvŽZ
