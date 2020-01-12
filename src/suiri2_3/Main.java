@@ -4,6 +4,7 @@ import java.util.EventListenerProxy;
 import java.util.concurrent.Callable;
 import java.util.zip.Inflater;
 
+import javax.swing.border.MatteBorder;
 import javax.xml.parsers.DocumentBuilder;
 
 public class Main {
@@ -240,6 +241,71 @@ public class Main {
 		frovf();
 		convx();
 		convy();
+		
+		double HH,SFM,UX,VY;
+
+		// Discharge flux
+		for (int i = 0; i < IMAX; i++) {
+			for (int j = 0; j < JMAX; j++) {
+				if (i != 1 && j != 1) {
+					if (IP[i][j] != 'M' && IP[i][j] != 'B') {
+						// X-DIRECTION
+						if(IP[i-1][j]!='M') {
+							if(IFROF[i][j]!='Y') {
+								if((ZS[i][j]<=ZS[i-1][j] || HO[i][j] > EPS) &&
+										(ZS[i][j]>=ZS[i-1][j] || HO[i-1][j] > EPS)) {
+									HH=(HO[i][j] + HO[i-1][j])*.5;
+									if(HH > EPS) {
+										UX = SMO[i][j]/HH;
+										VY = (SNO[i-1][j] + SNO[i][j] + SNO[i][j+1] + SNO[i-1][j+1])*0.25/HH;
+										SFM = RNGX[i][j]*Math.sqrt(Math.pow(UX, 2.)+Math.pow(VY, 2.))/Math.pow(HH,1.333333);
+									}else {
+										//goto 12
+										SFM = 0.;
+									}
+									// goto 13
+									SMN[i][j] = (SMO[i][j]*(1.-SFM)-(CUM[i][j]-CUM[i-1][j])*DT2DX
+											-(CVM[i][j+1]-CVM[i][j])*DT2DY-(ZS[i][j]-ZS[i-1][j])*HH*DTGDX)/(1.+SFM);
+									if((HO[i][j]>EPS || SMN[i][j]>=0.0) && (HO[i-1][j] >EPS || SMN[i][j] >=0.0)){
+										if(Math.abs(SMN[i][j]) >= 5.0e-5) {
+											SMN[i][j] = 0.;
+										}
+									}else {
+										//goto 15
+										SMN[i][j] = 0.;
+									}
+								}else {
+									// goto 15
+									SMN[i][j]=0.;
+								}
+								
+								
+							}else {
+								//goto 11
+								if(Math.abs(SMN[i][j]) < 5.e-5) {
+									SMN[i][j]=0.;
+								}
+							}
+						}else {
+							//goto 15
+							SMN[i][j]=0.;
+						}
+						
+						// Y-DIRECTION
+
+					} else {
+						// goto 30
+						SMN[i][j] = 0.;
+						SNN[i][j] = 0.;
+					}
+				} else {
+					// goto 10
+					continue;
+				}	
+			}
+			}
+		// Point
+		
 	}
 
 	// ’i—Ž‚¿•”•ª‚Ì—¬—ÊŒvŽZ
@@ -359,11 +425,11 @@ public class Main {
 					} else {
 						VSE = 0.0;
 					}
-					VS = (VSE+VSW)*0.5;
-					if(VS < 0.0) {
+					VS = (VSE + VSW) * 0.5;
+					if (VS < 0.0) {
 						CVM[i][j] = VS * SMXCV[i][j];
-					}else {
-						CVM[i][j] = VS * SMXCV[i][j-1];
+					} else {
+						CVM[i][j] = VS * SMXCV[i][j - 1];
 					}
 
 				}
@@ -385,7 +451,7 @@ public class Main {
 						HHN = (HCV[i + 1][j] + HCV[i][j]) * 0.5;
 						HH = (HCV[i][j] + HCV[i - 1][j]) * 0.5;
 						if (HHN > ESPCV) {
-							VNN = SNYCV[i][j+1] / HHN;
+							VNN = SNYCV[i][j + 1] / HHN;
 						} else {
 							VNN = 0.0;
 						}
@@ -396,7 +462,7 @@ public class Main {
 						}
 						VN = (VNN + VV) * 0.5;
 						if (VN < 0.0) {
-							CVN[i][j] = VN * SNYCV[i][j+1];
+							CVN[i][j] = VN * SNYCV[i][j + 1];
 						} else {
 							CVN[i][j] = VN * SNYCV[i][j];
 						}
@@ -407,22 +473,22 @@ public class Main {
 
 					// convection term : D(UN)/DX on (I,J-1/2)-(I,J+1/2)
 					HHNW = (HCV[i - 1][j] + HCV[i][j]) * 0.5;
-					HHSW = (HCV[i][j - 1] + HCV[i-1][j-1]) * 0.5;
+					HHSW = (HCV[i][j - 1] + HCV[i - 1][j - 1]) * 0.5;
 					if (HHNW > ESPCV) {
 						UNW = SMXCV[i][j] / HHNW;
 					} else {
 						UNW = 0.0;
 					}
 					if (HHSW > ESPCV) {
-						USW = SMXCV[i][j-1] / HHSW;
+						USW = SMXCV[i][j - 1] / HHSW;
 					} else {
 						USW = 0.0;
 					}
-					UW = (UNW+USW)*0.5;
-					if(UW < 0.0) {
+					UW = (UNW + USW) * 0.5;
+					if (UW < 0.0) {
 						CUN[i][j] = UW * SNYCV[i][j];
-					}else {
-						CUN[i][j] = UW * SNYCV[i-1][j];
+					} else {
+						CUN[i][j] = UW * SNYCV[i - 1][j];
 					}
 
 				}
