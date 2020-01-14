@@ -17,17 +17,17 @@ public class Main {
 	// Global variables for indflw()
 	static int IMAX, JMAX;
 	static double DT, DX, DY, G, EPS, DT2DX, DT2DY, DTGDX, DTGDY, DT2, DXDY;
-	static int IBR, JBR, IBRD, JBRD; //Break point, flood direction
+	static int IBR, JBR, IBRD, JBRD; // Break point, flood direction
 	static double QBR;
 
 	static char[][] IP;
-	static double[][] ZB;  //land height
-	static double[][] RN;  //Mannig roughness
+	static double[][] ZB; // land height
+	static double[][] RN; // Mannig roughness
 
-	static double[][] SMO; //x direction flux
-	static double[][] SNO; //y direction flux
-	static double[][] HO;  //water depth
-	static double[][] ZS;  //water height
+	static double[][] SMO; // x direction flux
+	static double[][] SNO; // y direction flux
+	static double[][] HO; // water depth
+	static double[][] ZS; // water height
 	static double[][] SMN;
 	static double[][] SNN;
 	static double[][] HN;
@@ -177,24 +177,26 @@ public class Main {
 			VIN = VIN + QBR * DT2;
 
 			// variables for convective term computaiton
-			for(int i = 0;i<IMAX;i++) {
-				for(int j = 0;j<JMAX;j++) {
-					HCV[i][j] = (HO[i][j]+ HN[i][j]) * 0.5;
+			for (int i = 0; i < IMAX; i++) {
+				for (int j = 0; j < JMAX; j++) {
+					HCV[i][j] = (HO[i][j] + HN[i][j]) * 0.5;
 					SMXCV[i][j] = (SMO[i][j] + SMN[i][j]) * 0.5;
 					SNYCV[i][j] = (SNO[i][j] + SNN[i][j]) * 0.5;
 				}
 			}
 			// replacement of variables for next step
-			for(int i = 0;i<IMAX;i++) {
-				for(int j = 0;j<JMAX;j++) {
+			for (int i = 0; i < IMAX; i++) {
+				for (int j = 0; j < JMAX; j++) {
 					SMO[i][j] = SMN[i][j];
 					SNO[i][j] = SNN[i][j];
-					HO[i][j]  = HN[i][j];
-					ZS[i][j]  = ZB[i][j] + HO[i][j];
+					HO[i][j] = HN[i][j];
+					ZS[i][j] = ZB[i][j] + HO[i][j];
+					if (NSTEP % 1800 == 0) {
+						System.out.println("i:" + i + " j:" + j + " HO:" + HO[i][j]);
+					}
 				}
 			}
-		
-			
+
 		}
 		// if(NSTEP != N1*NPRINT) {
 		// //GOTO 450
@@ -324,39 +326,38 @@ public class Main {
 		}
 		// Point of LEVEE BREAK
 		double QQ;
-		if(IBRD == 0 || JBRD == 0) {
-			if(IBRD != 0) {
-				if(JBRD != 0) {
+		if (IBRD == 0 || JBRD == 0) {
+			if (IBRD != 0) {
+				if (JBRD != 0) {
 					SMN[IBR][JBR] = 0.;
 					SNN[IBR][JBR] = 0.;
-				}else {
-					QQ = QBR/DY;
-					SMN[IBR][JBR] = IBRD*QQ;
+				} else {
+					QQ = QBR / DY;
+					SMN[IBR][JBR] = IBRD * QQ;
 					SNN[IBR][JBR] = 0.0;
 				}
-			}else {
-				QQ = QBR/DX;
+			} else {
+				QQ = QBR / DX;
 				SMN[IBR][JBR] = 0.;
-				SNN[IBR][JBR] = JBRD*QQ;
+				SNN[IBR][JBR] = JBRD * QQ;
 			}
-		}else {
-			QQ = QBR/(DX + DY);
+		} else {
+			QQ = QBR / (DX + DY);
 			SMN[IBR][JBR] = IBRD * QQ;
 			SNN[IBR][JBR] = JBRD * QQ;
-			
+
 		}
-		
+
 		// WATER DEPTH
-		for(int i = 0;i<IMAX;i++) {
-			for(int j = 0;j<JMAX;j++) {
-				if(IP[i][j] != 'M' && IP[i][j] != 'B') {
-					HN[i][j] = HO[i][j] - (SMN[i+1][j] -SMN[i][j])*DT2DX - (SNN[i][j+1] - SNN[i][j]) * DT2DY;
-				}else {
+		for (int i = 0; i < IMAX; i++) {
+			for (int j = 0; j < JMAX; j++) {
+				if (IP[i][j] != 'M' && IP[i][j] != 'B') {
+					HN[i][j] = HO[i][j] - (SMN[i + 1][j] - SMN[i][j]) * DT2DX - (SNN[i][j + 1] - SNN[i][j]) * DT2DY;
+				} else {
 					HN[i][j] = 0.;
 				}
 			}
 		}
-		
 
 	}
 
