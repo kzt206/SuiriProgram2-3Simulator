@@ -17,17 +17,17 @@ public class Main {
 	// Global variables for indflw()
 	static int IMAX, JMAX;
 	static double DT, DX, DY, G, EPS, DT2DX, DT2DY, DTGDX, DTGDY, DT2, DXDY;
-	static int IBR, JBR, IBRD, JBRD;
+	static int IBR, JBR, IBRD, JBRD; //Break point, flood direction
 	static double QBR;
 
 	static char[][] IP;
-	static double[][] ZB;
-	static double[][] RN;
+	static double[][] ZB;  //land height
+	static double[][] RN;  //Mannig roughness
 
-	static double[][] SMO;
-	static double[][] SNO;
-	static double[][] HO;
-	static double[][] ZS;
+	static double[][] SMO; //x direction flux
+	static double[][] SNO; //y direction flux
+	static double[][] HO;  //water depth
+	static double[][] ZS;  //water height
 	static double[][] SMN;
 	static double[][] SNN;
 	static double[][] HN;
