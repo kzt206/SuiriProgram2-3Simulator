@@ -177,9 +177,24 @@ public class Main {
 			VIN = VIN + QBR * DT2;
 
 			// variables for convective term computaiton
-
+			for(int i = 0;i<IMAX;i++) {
+				for(int j = 0;j<JMAX;j++) {
+					HCV[i][j] = (HO[i][j]+ HN[i][j]) * 0.5;
+					SMXCV[i][j] = (SMO[i][j] + SMN[i][j]) * 0.5;
+					SNYCV[i][j] = (SNO[i][j] + SNN[i][j]) * 0.5;
+				}
+			}
 			// replacement of variables for next step
-
+			for(int i = 0;i<IMAX;i++) {
+				for(int j = 0;j<JMAX;j++) {
+					SMO[i][j] = SMN[i][j];
+					SNO[i][j] = SNN[i][j];
+					HO[i][j]  = HN[i][j];
+					ZS[i][j]  = ZB[i][j] + HO[i][j];
+				}
+			}
+		
+			
 		}
 		// if(NSTEP != N1*NPRINT) {
 		// //GOTO 450
