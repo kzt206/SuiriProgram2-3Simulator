@@ -307,7 +307,30 @@ public class Main {
 				}
 			}
 		}
-		// Point
+		// Point of LEVEE BREAK
+		double QQ;
+		if(IBRD == 0 || JBRD == 0) {
+			if(IBRD != 0) {
+				if(JBRD != 0) {
+					SMN[IBR][JBR] = 0.;
+					SNN[IBR][JBR] = 0.;
+				}else {
+					QQ = QBR/DY;
+					SMN[IBR][JBR] = IBRD*QQ;
+					SNN[IBR][JBR] = 0.0;
+				}
+			}else {
+				QQ = QBR/DX;
+				SMN[IBR][JBR] = 0.;
+				SNN[IBR][JBR] = JBRD*QQ;
+			}
+		}else {
+			QQ = QBR/(DX + DY);
+			SMN[IBR][JBR] = IBRD * QQ;
+			SNN[IBR][JBR] = JBRD * QQ;
+			
+		}
+		
 
 	}
 
