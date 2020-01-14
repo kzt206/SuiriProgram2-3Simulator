@@ -331,6 +331,17 @@ public class Main {
 			
 		}
 		
+		// WATER DEPTH
+		for(int i = 0;i<IMAX;i++) {
+			for(int j = 0;j<JMAX;j++) {
+				if(IP[i][j] != 'M' && IP[i][j] != 'B') {
+					HN[i][j] = HO[i][j] - (SMN[i+1][j] -SMN[i][j])*DT2DX - (SNN[i][j+1] - SNN[i][j]) * DT2DY;
+				}else {
+					HN[i][j] = 0.;
+				}
+			}
+		}
+		
 
 	}
 
