@@ -1,5 +1,10 @@
 package suiri2_3;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.EventListenerProxy;
 import java.util.concurrent.Callable;
 import java.util.zip.Inflater;
@@ -184,17 +189,39 @@ public class Main {
 					SNYCV[i][j] = (SNO[i][j] + SNN[i][j]) * 0.5;
 				}
 			}
-			// replacement of variables for next step
-			for (int i = 0; i < IMAX; i++) {
-				for (int j = 0; j < JMAX; j++) {
-					SMO[i][j] = SMN[i][j];
-					SNO[i][j] = SNN[i][j];
-					HO[i][j] = HN[i][j];
-					ZS[i][j] = ZB[i][j] + HO[i][j];
-					if (NSTEP % 1800 == 0) {
-						System.out.println("i:" + i + " j:" + j + " HO:" + HO[i][j]);
+			if (NSTEP % 900 == 0) {
+				try {
+					String fileNameHO = "HO_" + NSTEP + ".txt";
+					File fileHO = new File(fileNameHO);
+					PrintWriter pHOWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileHO)));
+
+					String  fileNameSMO = "SMO_" + NSTEP +".txt";
+					File fileSMO = new File(fileNameSMO);
+					PrintWriter pSMOWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileSMO)));
+					
+					// replacement of variables for next step
+					for (int i = 0; i < IMAX; i++) {
+						for (int j = 0; j < JMAX; j++) {
+							SMO[i][j] = SMN[i][j];
+							SNO[i][j] = SNN[i][j];
+							HO[i][j] = HN[i][j];
+							ZS[i][j] = ZB[i][j] + HO[i][j];
+
+							pHOWriter.printf("%8.4f  ",HO[i][j]);
+							pSMOWriter.printf("%8.4f  ",SMO[i][j]);
+							// System.out.println("i:" + i + " j:" + j + " HO:" + HO[i][j]);
+						}
+						pHOWriter.println();
+						pSMOWriter.println();
 					}
+
+					pHOWriter.close();
+					pSMOWriter.close();
+					
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
+
 			}
 
 		}
