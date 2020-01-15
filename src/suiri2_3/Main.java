@@ -173,7 +173,7 @@ public class Main {
 		double S0 = 0.0;
 		// GOTO 400
 		// int N1 = NSTEP/NPRINT;
-		for (int NSTEP = 0; NSTEP < NFINAL; NSTEP++) {
+		for (int NSTEP = 0; NSTEP < NFINAL+1; NSTEP++) {
 			double TIME = NSTEP * DT2;
 			QBR = qbreak(TIME, QBR);
 			System.out.println("NSTEP:" + NSTEP);
@@ -181,7 +181,7 @@ public class Main {
 
 			VIN = VIN + QBR * DT2;
 
-			// variables for convective term computaiton
+			// variables for convective term computation
 			for (int i = 0; i < IMAX; i++) {
 				for (int j = 0; j < JMAX; j++) {
 					HCV[i][j] = (HO[i][j] + HN[i][j]) * 0.5;
@@ -189,15 +189,19 @@ public class Main {
 					SNYCV[i][j] = (SNO[i][j] + SNN[i][j]) * 0.5;
 				}
 			}
-			if (NSTEP % 900 == 0) {
+			if (NSTEP % 720 == 0) { // 720 Steps = 3600sec = 1hour
 				try {
-					String fileNameHO = "HO_" + NSTEP + ".txt";
+					String fileNameHO = "HO/HO_" + String.format("%04d", NSTEP) + ".txt";
 					File fileHO = new File(fileNameHO);
 					PrintWriter pHOWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileHO)));
 
-					String  fileNameSMO = "SMO_" + NSTEP +".txt";
+					String  fileNameSMO = "SMO/SMO_" + String.format("%04d", NSTEP) +".txt";
 					File fileSMO = new File(fileNameSMO);
 					PrintWriter pSMOWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileSMO)));
+					
+					String  fileNameSNO = "SNO/SNO_" + String.format("%04d", NSTEP) +".txt";
+					File fileSNO = new File(fileNameSNO);
+					PrintWriter pSNOWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileSNO)));
 					
 					// replacement of variables for next step
 					for (int i = 0; i < IMAX; i++) {
@@ -209,14 +213,17 @@ public class Main {
 
 							pHOWriter.printf("%8.4f  ",HO[i][j]);
 							pSMOWriter.printf("%8.4f  ",SMO[i][j]);
+							pSNOWriter.printf("%8.4f  ",SNO[i][j]);
 							// System.out.println("i:" + i + " j:" + j + " HO:" + HO[i][j]);
 						}
 						pHOWriter.println();
 						pSMOWriter.println();
+						pSNOWriter.println();
 					}
 
 					pHOWriter.close();
 					pSMOWriter.close();
+					pSNOWriter.close();
 					
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -225,36 +232,6 @@ public class Main {
 			}
 
 		}
-		// if(NSTEP != N1*NPRINT) {
-		// //GOTO 450
-		// if(NSTEP < NFINAL) {
-		// // GOTO 300
-		// NSTEP += 1;
-		// TIME = NSTEP * DT2;
-		// qbreak(TIME,QBR);
-		// indflw(NSTEP,TIME);
-		// VIN += QBR*DT2;
-		//
-		// }else {
-		// System.out.println("Successfully ended.");
-		// }
-		// }else {
-		// //Check of water volume
-		// double SN = 0.0;
-		// for(int i = 0;i<IMAX;i++) {
-		// for(int j = 0;j<JMAX;j++) {
-		// if(IP[i][j]=='M' || IP[i][j]=='B') {
-		// //GOTO 10
-		// continue;
-		// }else {
-		// SN = SN + HO[i][j];
-		// }
-		// }
-		// }
-		// SN = SN*DXDY;
-		// double SOVIN = S0 + VIN;
-		//
-		// }
 
 	}
 
