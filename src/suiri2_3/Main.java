@@ -76,7 +76,8 @@ public class Main {
 		for (int NSTEP = 0; NSTEP < NFINAL+1; NSTEP++) {
 			double TIME = NSTEP * DT2;
 			QBR = qbreak(TIME, QBR);
-			System.out.println("NSTEP:" + NSTEP);
+			System.out.println("NSTEP: " + NSTEP);
+			System.out.println("QBR: " + QBR );
 			
 			indflw(NSTEP, TIME);
 
@@ -385,8 +386,8 @@ public class Main {
 								if (ZB[i][j] < ZS[i - 1][j]) {
 									IFROF[i][j] = 'N';
 								} else {
-									double ID = -1.;
-									double HH = HO[i][j];
+									double ID = 1.;
+									double HH = HO[i-1][j];
 									IFROF[i][j] = 'Y';
 									if (HH > EPS) {
 										SMN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
@@ -395,8 +396,8 @@ public class Main {
 									}
 								}
 							} else {
-								double ID = 1.;
-								double HH = HO[i - 1][j];
+								double ID = -1.;
+								double HH = HO[i][j];
 								IFROF[i][j] = 'Y';
 								if (HH > EPS) {
 									SMN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
@@ -412,8 +413,8 @@ public class Main {
 								if (ZB[i][j] < ZS[i][j - 1]) {
 									JFROF[i][j] = 'N';
 								} else {
-									double ID = -1.;
-									double HH = HO[i][j];
+									double ID = 1.;
+									double HH = HO[i][j-1];
 									IFROF[i][j] = 'Y';
 									if (HH > EPS) {
 										SMN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
@@ -423,8 +424,8 @@ public class Main {
 								}
 
 							} else {
-								double ID = 1.;
-								double HH = HO[i][j - 1];
+								double ID = -1.;
+								double HH = HO[i][j];
 								IFROF[i][j] = 'Y';
 								if (HH > EPS) {
 									SMN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
@@ -510,8 +511,8 @@ public class Main {
 				if (i != 0 && j != 0) {
 					// convection term : D(VN)/DY on (I,J+1/2)-(I+1,j+1/2)
 					if (IP[i][j] != 'M') {
-						HHN = (HCV[i + 1][j] + HCV[i][j]) * 0.5;
-						HH = (HCV[i][j] + HCV[i - 1][j]) * 0.5;
+						HHN = (HCV[i][j+1] + HCV[i][j]) * 0.5;
+						HH = (HCV[i][j] + HCV[i][j-1]) * 0.5;
 						if (HHN > ESPCV) {
 							VNN = SNYCV[i][j + 1] / HHN;
 						} else {
