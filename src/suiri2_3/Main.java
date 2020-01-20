@@ -55,7 +55,7 @@ public class Main {
 		// NFILE must be integer times of NPRINT
 		int NPRINT = 180;
 		int NFILE = 360;
-		
+
 		start();
 
 		double NFINAL = (NHT - 1) * 3600. / DT2; // original
@@ -73,12 +73,12 @@ public class Main {
 		double S0 = 0.0;
 		// GOTO 400
 		// int N1 = NSTEP/NPRINT;
-		for (int NSTEP = 0; NSTEP < NFINAL+1; NSTEP++) {
+		for (int NSTEP = 0; NSTEP < NFINAL + 1; NSTEP++) {
 			double TIME = NSTEP * DT2;
 			QBR = qbreak(TIME, QBR);
 			System.out.println("NSTEP: " + NSTEP);
-			System.out.println("QBR: " + QBR );
-			
+			System.out.println("QBR: " + QBR);
+
 			indflw(NSTEP, TIME);
 
 			VIN = VIN + QBR * DT2;
@@ -97,14 +97,14 @@ public class Main {
 					File fileHO = new File(fileNameHO);
 					PrintWriter pHOWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileHO)));
 
-					String  fileNameSMO = "SMO/SMO_" + String.format("%04d", NSTEP) +".txt";
+					String fileNameSMO = "SMO/SMO_" + String.format("%04d", NSTEP) + ".txt";
 					File fileSMO = new File(fileNameSMO);
 					PrintWriter pSMOWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileSMO)));
-					
-					String  fileNameSNO = "SNO/SNO_" + String.format("%04d", NSTEP) +".txt";
+
+					String fileNameSNO = "SNO/SNO_" + String.format("%04d", NSTEP) + ".txt";
 					File fileSNO = new File(fileNameSNO);
 					PrintWriter pSNOWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileSNO)));
-					
+
 					// replacement of variables for next step
 					for (int i = 0; i < IMAX; i++) {
 						for (int j = 0; j < JMAX; j++) {
@@ -113,9 +113,9 @@ public class Main {
 							HO[i][j] = HN[i][j];
 							ZS[i][j] = ZB[i][j] + HO[i][j];
 
-							pHOWriter.printf("%8.4f  ",HO[i][j]);
-							pSMOWriter.printf("%8.4f  ",SMO[i][j]);
-							pSNOWriter.printf("%8.4f  ",SNO[i][j]);
+							pHOWriter.printf("%8.4f  ", HO[i][j]);
+							pSMOWriter.printf("%8.4f  ", SMO[i][j]);
+							pSNOWriter.printf("%8.4f  ", SNO[i][j]);
 							// System.out.println("i:" + i + " j:" + j + " HO:" + HO[i][j]);
 						}
 						pHOWriter.println();
@@ -126,7 +126,7 @@ public class Main {
 					pHOWriter.close();
 					pSMOWriter.close();
 					pSNOWriter.close();
-					
+
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -136,7 +136,7 @@ public class Main {
 		}
 
 	}
-	
+
 	static void start() {
 		// BEGIN of Subroutine START
 		// Read GEO2D.DAT
@@ -387,7 +387,7 @@ public class Main {
 									IFROF[i][j] = 'N';
 								} else {
 									double ID = 1.;
-									double HH = HO[i-1][j];
+									double HH = HO[i - 1][j];
 									IFROF[i][j] = 'Y';
 									if (HH > EPS) {
 										SMN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
@@ -414,8 +414,8 @@ public class Main {
 									JFROF[i][j] = 'N';
 								} else {
 									double ID = 1.;
-									double HH = HO[i][j-1];
-									IFROF[i][j] = 'Y';
+									double HH = HO[i][j - 1];
+									JFROF[i][j] = 'Y';
 									if (HH > EPS) {
 										SMN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
 									} else {
@@ -426,7 +426,7 @@ public class Main {
 							} else {
 								double ID = -1.;
 								double HH = HO[i][j];
-								IFROF[i][j] = 'Y';
+								JFROF[i][j] = 'Y';
 								if (HH > EPS) {
 									SMN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
 								} else {
@@ -511,8 +511,8 @@ public class Main {
 				if (i != 0 && j != 0) {
 					// convection term : D(VN)/DY on (I,J+1/2)-(I+1,j+1/2)
 					if (IP[i][j] != 'M') {
-						HHN = (HCV[i][j+1] + HCV[i][j]) * 0.5;
-						HH = (HCV[i][j] + HCV[i][j-1]) * 0.5;
+						HHN = (HCV[i][j + 1] + HCV[i][j]) * 0.5;
+						HH = (HCV[i][j] + HCV[i][j - 1]) * 0.5;
 						if (HHN > ESPCV) {
 							VNN = SNYCV[i][j + 1] / HHN;
 						} else {
@@ -564,102 +564,102 @@ public class Main {
 
 //// BEGIN of Subroutine START
 //// Read GEO2D.DAT
-//FileGeo2dRead fGeo2dRead = new FileGeo2dRead();
-//IMAX = fGeo2dRead.getIMAX();
-//JMAX = fGeo2dRead.getJMAX();
+// FileGeo2dRead fGeo2dRead = new FileGeo2dRead();
+// IMAX = fGeo2dRead.getIMAX();
+// JMAX = fGeo2dRead.getJMAX();
 //
-//IP = fGeo2dRead.getIP();
-//ZB = fGeo2dRead.getZB();
-//RN = fGeo2dRead.getRN();
+// IP = fGeo2dRead.getIP();
+// ZB = fGeo2dRead.getZB();
+// RN = fGeo2dRead.getRN();
 //
 //// System.out.println("Main java2:"+IP[18][10]+" "+ZB[18][10]+" "+RN[18][10]);
 //// System.out.printf("Main.java :IMAX:%d, JMAX:%d\n", IMAX, JMAX);
 //
 //// Data block
-//DX = 285.44;
-//DY = 231.0;
-//G = 9.8;
-//EPS = 0.001;
-//DT = 2.5;
-//IBR = 29 - 1;
-//JBR = 42 - 1;
-//IBRD = -1;
-//JBRD = 0;
-//QBR = 0.0;
+// DX = 285.44;
+// DY = 231.0;
+// G = 9.8;
+// EPS = 0.001;
+// DT = 2.5;
+// IBR = 29 - 1;
+// JBR = 42 - 1;
+// IBRD = -1;
+// JBRD = 0;
+// QBR = 0.0;
 //
 //// Set Break Point
 //// Change of IP for LEVEE-Break Point
-//IP[IBR][JBR] = 'B';
+// IP[IBR][JBR] = 'B';
 //
 //// Read FLOOD.DAT
-//FileFloodRead ffRead = new FileFloodRead();
-//NHT = ffRead.getNHT();
+// FileFloodRead ffRead = new FileFloodRead();
+// NHT = ffRead.getNHT();
 //// System.out.println("NHT: " + NHT);
-//TRLX = ffRead.getTRLX();
-//QHYD = ffRead.getFloodQ();
+// TRLX = ffRead.getTRLX();
+// QHYD = ffRead.getFloodQ();
 //
 //// Initialization of Variables
-//SMO = new double[IMAX][JMAX];
-//SNO = new double[IMAX][JMAX];
-//HO = new double[IMAX][JMAX];
-//ZS = new double[IMAX][JMAX];
-//SMN = new double[IMAX][JMAX];
-//SNN = new double[IMAX][JMAX];
-//HN = new double[IMAX][JMAX];
-//SMXCV = new double[IMAX][JMAX];
-//SNYCV = new double[IMAX][JMAX];
-//HCV = new double[IMAX][JMAX];
-//CUM = new double[IMAX][JMAX];
-//CVM = new double[IMAX][JMAX];
-//CUN = new double[IMAX][JMAX];
-//CVN = new double[IMAX][JMAX];
-//IFROF = new char[IMAX][JMAX];
-//JFROF = new char[IMAX][JMAX];
-//RNGX = new double[IMAX][JMAX];
-//RNGY = new double[IMAX][JMAX];
-//for (int i = 0; i < IMAX; i++) {
-//	for (int j = 0; j < JMAX; j++) {
-//		SMO[i][j] = 0.0;
-//		SNO[i][j] = 0.0;
-//		HO[i][j] = 0.0;
-//		ZS[i][j] = 0.0;
-//		SMN[i][j] = 0.0;
-//		SNN[i][j] = 0.0;
-//		HN[i][j] = 0.0;
-//		SMXCV[i][j] = 0.0;
-//		SNYCV[i][j] = 0.0;
-//		HCV[i][j] = 0.0;
-//		CUM[i][j] = 0.0;
-//		CVM[i][j] = 0.0;
-//		CUN[i][j] = 0.0;
-//		CVN[i][j] = 0.0;
-//		IFROF[i][j] = 'N';
-//		JFROF[i][j] = 'N';
-//		if (i != 0) {
-//			if (IP[i - 1][j] == 'I') {
-//				RNGX[i][j] = Math.pow(((RN[i][j] + RN[i - 1][j]) / 2.0), 2.) * G * DT;
-//			} else {
-//				RNGX[i][j] = Math.pow((RN[i][j]), 2.) * G * DT;
-//			}
-//		} else {
-//			RNGX[i][j] = Math.pow((RN[i][j]), 2.) * G * DT;
-//		}
-//		if (j != 0) {
-//			if (IP[i][j - 1] == 'I') {
-//				RNGY[i][j] = Math.pow((RN[i][j] + RN[i][j - 1] / 2.0), 2.) * G * DT;
-//			} else {
-//				RNGY[i][j] = Math.pow(RN[i][j], 2.) * G * DT;
-//			}
-//		} else {
-//			RNGY[i][j] = Math.pow(RN[i][j], 2.) * G * DT;
-//		}
-//	}
-//}
+// SMO = new double[IMAX][JMAX];
+// SNO = new double[IMAX][JMAX];
+// HO = new double[IMAX][JMAX];
+// ZS = new double[IMAX][JMAX];
+// SMN = new double[IMAX][JMAX];
+// SNN = new double[IMAX][JMAX];
+// HN = new double[IMAX][JMAX];
+// SMXCV = new double[IMAX][JMAX];
+// SNYCV = new double[IMAX][JMAX];
+// HCV = new double[IMAX][JMAX];
+// CUM = new double[IMAX][JMAX];
+// CVM = new double[IMAX][JMAX];
+// CUN = new double[IMAX][JMAX];
+// CVN = new double[IMAX][JMAX];
+// IFROF = new char[IMAX][JMAX];
+// JFROF = new char[IMAX][JMAX];
+// RNGX = new double[IMAX][JMAX];
+// RNGY = new double[IMAX][JMAX];
+// for (int i = 0; i < IMAX; i++) {
+// for (int j = 0; j < JMAX; j++) {
+// SMO[i][j] = 0.0;
+// SNO[i][j] = 0.0;
+// HO[i][j] = 0.0;
+// ZS[i][j] = 0.0;
+// SMN[i][j] = 0.0;
+// SNN[i][j] = 0.0;
+// HN[i][j] = 0.0;
+// SMXCV[i][j] = 0.0;
+// SNYCV[i][j] = 0.0;
+// HCV[i][j] = 0.0;
+// CUM[i][j] = 0.0;
+// CVM[i][j] = 0.0;
+// CUN[i][j] = 0.0;
+// CVN[i][j] = 0.0;
+// IFROF[i][j] = 'N';
+// JFROF[i][j] = 'N';
+// if (i != 0) {
+// if (IP[i - 1][j] == 'I') {
+// RNGX[i][j] = Math.pow(((RN[i][j] + RN[i - 1][j]) / 2.0), 2.) * G * DT;
+// } else {
+// RNGX[i][j] = Math.pow((RN[i][j]), 2.) * G * DT;
+// }
+// } else {
+// RNGX[i][j] = Math.pow((RN[i][j]), 2.) * G * DT;
+// }
+// if (j != 0) {
+// if (IP[i][j - 1] == 'I') {
+// RNGY[i][j] = Math.pow((RN[i][j] + RN[i][j - 1] / 2.0), 2.) * G * DT;
+// } else {
+// RNGY[i][j] = Math.pow(RN[i][j], 2.) * G * DT;
+// }
+// } else {
+// RNGY[i][j] = Math.pow(RN[i][j], 2.) * G * DT;
+// }
+// }
+// }
 //// Constants
-//DT2 = DT * 2.0;
-//DT2DX = DT * 2.0 / DX;
-//DT2DY = DT * 2.0 / DY;
-//DTGDX = DT * G / DX * 2.0;
-//DTGDY = DT * G / DY * 2.0;
-//DXDY = DX * DY;
+// DT2 = DT * 2.0;
+// DT2DX = DT * 2.0 / DX;
+// DT2DY = DT * 2.0 / DY;
+// DTGDX = DT * G / DX * 2.0;
+// DTGDY = DT * G / DY * 2.0;
+// DXDY = DX * DY;
 //// END of Subroutine START
