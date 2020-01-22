@@ -271,10 +271,15 @@ public class Main {
 
 		double HH, SFM,SFN, UX, VY;
 
+		char tmpIP,tmpbIP,tmpIFROF;
+		
 		// Discharge flux
 		for (int i = 0; i < IMAX; i++) {
 			for (int j = 0; j < JMAX; j++) {
 				if (i != 0 && j != 0) {
+					tmpIP = IP[i][j];
+					tmpbIP = IP[i-1][j];
+					tmpIFROF=IFROF[i][j];
 					if (IP[i][j] != 'M' && IP[i][j] != 'B') {
 						// X-DIRECTION
 						if (IP[i - 1][j] != 'M') {
@@ -372,7 +377,8 @@ public class Main {
 						SMN[i][j] = 0.;
 						SNN[i][j] = 0.;
 					}
-//					System.out.println("last SMN:" + SMN[i][j]);
+					System.out.println("last SMN:" + SMN[i][j]);
+					System.out.println("last SNN:" + SNN[i][j]);
 				} else {
 					// goto 10
 					continue;
@@ -463,9 +469,9 @@ public class Main {
 									double HH = HO[i][j - 1];
 									JFROF[i][j] = 'Y';
 									if (HH > EPS) {
-										SMN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
+										SNN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
 									} else {
-										SMN[i][j] = 0.0;
+										SNN[i][j] = 0.0;
 									}
 								}
 
@@ -474,9 +480,9 @@ public class Main {
 								double HH = HO[i][j];
 								JFROF[i][j] = 'Y';
 								if (HH > EPS) {
-									SMN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
+									SNN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
 								} else {
-									SMN[i][j] = 0.0;
+									SNN[i][j] = 0.0;
 								}
 							}
 
