@@ -57,6 +57,8 @@ public class Main {
 		int NFILE = 360;
 
 		start();
+		
+		PrintWriter pHOWriter=null,pSMOWriter=null,pSNOWriter=null;
 
 		double NFINAL = (NHT - 1) * 3600. / DT2; // original
 		// double NFINAL = (NHT)*3600./DT2;
@@ -95,15 +97,15 @@ public class Main {
 				try {
 					String fileNameHO = "HO/HO_" + String.format("%04d", NSTEP) + ".txt";
 					File fileHO = new File(fileNameHO);
-					PrintWriter pHOWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileHO)));
+					pHOWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileHO)));
 
 					String fileNameSMO = "SMO/SMO_" + String.format("%04d", NSTEP) + ".txt";
 					File fileSMO = new File(fileNameSMO);
-					PrintWriter pSMOWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileSMO)));
+					pSMOWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileSMO)));
 
 					String fileNameSNO = "SNO/SNO_" + String.format("%04d", NSTEP) + ".txt";
 					File fileSNO = new File(fileNameSNO);
-					PrintWriter pSNOWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileSNO)));
+					pSNOWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileSNO)));
 
 					// replacement of variables for next step
 					for (int i = 0; i < IMAX; i++) {
@@ -123,12 +125,28 @@ public class Main {
 						pSNOWriter.println();
 					}
 
-					pHOWriter.close();
-					pSMOWriter.close();
-					pSNOWriter.close();
+//					pHOWriter.close();
+//					pSMOWriter.close();
+//					pSNOWriter.close();
 
 				} catch (IOException e) {
 					e.printStackTrace();
+				}finally {
+					if(pHOWriter != null) {
+						try {
+							pHOWriter.close();
+						}catch (Exception e2) {}	
+					}
+					if(pSMOWriter != null) {
+						try {
+							pSMOWriter.close();
+						}catch (Exception e2) {}			
+					}
+					if(pSNOWriter != null) {
+						try {
+							pSNOWriter.close();
+						}catch (Exception e2) {}			
+					}
 				}
 
 			}
@@ -269,17 +287,17 @@ public class Main {
 		convx();
 		convy();
 
-		double HH, SFM,SFN, UX, VY;
+		double HH, SFM, SFN, UX, VY;
 
-		char tmpIP,tmpbIP,tmpIFROF;
-		
+		char tmpIP, tmpbIP, tmpIFROF;
+
 		// Discharge flux
 		for (int i = 0; i < IMAX; i++) {
 			for (int j = 0; j < JMAX; j++) {
 				if (i != 0 && j != 0) {
 					tmpIP = IP[i][j];
-					tmpbIP = IP[i-1][j];
-					tmpIFROF=IFROF[i][j];
+					tmpbIP = IP[i - 1][j];
+					tmpIFROF = IFROF[i][j];
 					if (IP[i][j] != 'M' && IP[i][j] != 'B') {
 						// X-DIRECTION
 						if (IP[i - 1][j] != 'M') {
@@ -301,7 +319,7 @@ public class Main {
 									SMN[i][j] = (SMO[i][j] * (1. - SFM) - (CUM[i][j] - CUM[i - 1][j]) * DT2DX
 											- (CVM[i][j + 1] - CVM[i][j]) * DT2DY
 											- (ZS[i][j] - ZS[i - 1][j]) * HH * DTGDX) / (1. + SFM);
-									System.out.println(SMN[i][j]);
+//									System.out.println(SMN[i][j]);
 									if ((HO[i][j] > EPS || SMN[i][j] >= 0.0)
 											&& (HO[i - 1][j] > EPS || SMN[i][j] >= 0.0)) {
 										if (Math.abs(SMN[i][j]) >= 5.0e-5) {
@@ -328,13 +346,13 @@ public class Main {
 						}
 
 						// Y-DIRECTION
-						if (IP[i][j-1] != 'M') {
+						if (IP[i][j - 1] != 'M') {
 							if (IFROF[i][j] != 'Y') {
-								if ((ZS[i][j] <= ZS[i][j-1] || HO[i][j] > EPS)
-										&& (ZS[i][j] >= ZS[i][j-1] || HO[i][j-1] > EPS)) {
-									HH = (HO[i][j] + HO[i][j-1]) * .5;
+								if ((ZS[i][j] <= ZS[i][j - 1] || HO[i][j] > EPS)
+										&& (ZS[i][j] >= ZS[i][j - 1] || HO[i][j - 1] > EPS)) {
+									HH = (HO[i][j] + HO[i][j - 1]) * .5;
 									if (HH > EPS) {
-										UX = (SMO[i][j] + SMO[i][j-1] + SMO[i+1][j - 1] + SMO[i+1][j]) * 0.25
+										UX = (SMO[i][j] + SMO[i][j - 1] + SMO[i + 1][j - 1] + SMO[i + 1][j]) * 0.25
 												/ HH;
 										VY = SNO[i][j] / HH;
 										SFN = RNGY[i][j] * Math.sqrt(Math.pow(UX, 2.) + Math.pow(VY, 2.))
@@ -344,10 +362,10 @@ public class Main {
 										SFN = 0.;
 									}
 									// goto 13
-									SNN[i][j] = (SNO[i][j] * (1. - SFN) - (CUN[i][j] - CUM[i][j-1]) * DT2DX
-											- (CVN[i][j] - CVN[i][j-1]) * DT2DY
-											- (ZS[i][j] - ZS[i][j-1]) * HH * DTGDX) / (1. + SFN);
-									System.out.println(SNN[i][j]);
+									SNN[i][j] = (SNO[i][j] * (1. - SFN) - (CUN[i][j] - CUM[i][j - 1]) * DT2DX
+											- (CVN[i][j] - CVN[i][j - 1]) * DT2DY
+											- (ZS[i][j] - ZS[i][j - 1]) * HH * DTGDX) / (1. + SFN);
+//									System.out.println(SNN[i][j]);
 									if ((HO[i][j] > EPS || SNN[i][j] >= 0.0)
 											&& (HO[i - 1][j] > EPS || SNN[i][j] >= 0.0)) {
 										if (Math.abs(SNN[i][j]) >= 5.0e-5) {
@@ -377,8 +395,8 @@ public class Main {
 						SMN[i][j] = 0.;
 						SNN[i][j] = 0.;
 					}
-					System.out.println("last SMN:" + SMN[i][j]);
-					System.out.println("last SNN:" + SNN[i][j]);
+//					System.out.println("last SMN:" + SMN[i][j]);
+//					System.out.println("last SNN:" + SNN[i][j]);
 				} else {
 					// goto 10
 					continue;
