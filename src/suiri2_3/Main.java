@@ -126,8 +126,8 @@ public class Main {
 					}
 
 //					pHOWriter.close();
-					pSMOWriter.close();
-					pSNOWriter.close();
+//					pSMOWriter.close();
+//					pSNOWriter.close();
 
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -319,7 +319,7 @@ public class Main {
 									SMN[i][j] = (SMO[i][j] * (1. - SFM) - (CUM[i][j] - CUM[i - 1][j]) * DT2DX
 											- (CVM[i][j + 1] - CVM[i][j]) * DT2DY
 											- (ZS[i][j] - ZS[i - 1][j]) * HH * DTGDX) / (1. + SFM);
-									System.out.println(SMN[i][j]);
+//									System.out.println(SMN[i][j]);
 									if ((HO[i][j] > EPS || SMN[i][j] >= 0.0)
 											&& (HO[i - 1][j] > EPS || SMN[i][j] >= 0.0)) {
 										if (Math.abs(SMN[i][j]) >= 5.0e-5) {
@@ -365,7 +365,7 @@ public class Main {
 									SNN[i][j] = (SNO[i][j] * (1. - SFN) - (CUN[i][j] - CUM[i][j - 1]) * DT2DX
 											- (CVN[i][j] - CVN[i][j - 1]) * DT2DY
 											- (ZS[i][j] - ZS[i][j - 1]) * HH * DTGDX) / (1. + SFN);
-									System.out.println(SNN[i][j]);
+//									System.out.println(SNN[i][j]);
 									if ((HO[i][j] > EPS || SNN[i][j] >= 0.0)
 											&& (HO[i - 1][j] > EPS || SNN[i][j] >= 0.0)) {
 										if (Math.abs(SNN[i][j]) >= 5.0e-5) {
@@ -395,8 +395,8 @@ public class Main {
 						SMN[i][j] = 0.;
 						SNN[i][j] = 0.;
 					}
-					System.out.println("last SMN:" + SMN[i][j]);
-					System.out.println("last SNN:" + SNN[i][j]);
+//					System.out.println("last SMN:" + SMN[i][j]);
+//					System.out.println("last SNN:" + SNN[i][j]);
 				} else {
 					// goto 10
 					continue;
