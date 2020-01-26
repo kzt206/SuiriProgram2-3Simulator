@@ -319,10 +319,11 @@ public class Main {
 									SMN[i][j] = (SMO[i][j] * (1. - SFM) - (CUM[i][j] - CUM[i - 1][j]) * DT2DX
 											- (CVM[i][j + 1] - CVM[i][j]) * DT2DY
 											- (ZS[i][j] - ZS[i - 1][j]) * HH * DTGDX) / (1. + SFM);
-//									System.out.println(SMN[i][j]);
+									System.out.println("i:" +i + " j:" + j);
+									System.out.println("SMN: " +SMN[i][j]);
 									if ((HO[i][j] > EPS || SMN[i][j] >= 0.0)
 											&& (HO[i - 1][j] > EPS || SMN[i][j] >= 0.0)) {
-										if (Math.abs(SMN[i][j]) >= 5.0e-5) {
+										if (Math.abs(SMN[i][j]) < 5.0e-5) {
 											SMN[i][j] = 0.;
 										}
 									} else {
@@ -358,25 +359,25 @@ public class Main {
 										SFN = RNGY[i][j] * Math.sqrt(Math.pow(UX, 2.) + Math.pow(VY, 2.))
 												/ Math.pow(HH, 1.333333);
 									} else {
-										// goto 12
+										// goto 22
 										SFN = 0.;
 									}
-									// goto 13
-									SNN[i][j] = (SNO[i][j] * (1. - SFN) - (CUN[i][j] - CUM[i][j - 1]) * DT2DX
+									// goto 23
+									SNN[i][j] = (SNO[i][j] * (1. - SFN) - (CUN[i+1][j] - CUN[i][j]) * DT2DX
 											- (CVN[i][j] - CVN[i][j - 1]) * DT2DY
 											- (ZS[i][j] - ZS[i][j - 1]) * HH * DTGDX) / (1. + SFN);
-//									System.out.println(SNN[i][j]);
+									System.out.println("SNN: " +SNN[i][j]);
 									if ((HO[i][j] > EPS || SNN[i][j] >= 0.0)
-											&& (HO[i - 1][j] > EPS || SNN[i][j] >= 0.0)) {
-										if (Math.abs(SNN[i][j]) >= 5.0e-5) {
+											&& (HO[i][j-1] > EPS || SNN[i][j] >= 0.0)) {
+										if (Math.abs(SNN[i][j]) < 5.0e-5) {
 											SNN[i][j] = 0.;
 										}
 									} else {
-										// goto 15
+										// goto 25
 										SNN[i][j] = 0.;
 									}
 								} else {
-									// goto 15
+									// goto 25
 									SNN[i][j] = 0.;
 								}
 
@@ -387,7 +388,7 @@ public class Main {
 								}
 							}
 						} else {
-							// goto 15
+							// goto 25
 							SNN[i][j] = 0.;
 						}
 					} else {
@@ -395,8 +396,10 @@ public class Main {
 						SMN[i][j] = 0.;
 						SNN[i][j] = 0.;
 					}
-//					System.out.println("last SMN:" + SMN[i][j]);
-//					System.out.println("last SNN:" + SNN[i][j]);
+					if(SMN[i][j]!=0.) {
+					System.out.println("last SMN:" + SMN[i][j]);
+					System.out.println("last SNN:" + SNN[i][j]);
+					}
 				} else {
 					// goto 10
 					continue;
@@ -450,24 +453,25 @@ public class Main {
 						// System.out.println("i:" + i +"j:"+ j +"IP:"+ IP[i][j]);
 
 						// X-Direction
-						if (IP[i - 1][j] != 'M') {
-							if (ZB[i - 1][j] < ZS[i][j]) {
-								if (ZB[i][j] < ZS[i - 1][j]) {
+						if (IP[i - 1][j] != 'M') {  // go to 20
+							if (ZB[i - 1][j] < ZS[i][j]) { // goto 11	
+								if (ZB[i][j] < ZS[i - 1][j]) {  // goto 12
 									IFROF[i][j] = 'N';
-								} else {
-									double ID = 1.;
-									double HH = HO[i - 1][j];
+									// goto 20
+								} else {  // 12
+									double ID = -1.;
+									double HH = HO[i][j];
 									IFROF[i][j] = 'Y';
 //									System.out.println(HH);
-									if (HH > EPS) {
+									if (HH > EPS) { //goto 14
 										SMN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
-									} else {
+									} else {  // 14
 										SMN[i][j] = 0.0;
 									}
 								}
-							} else {
-								double ID = -1.;
-								double HH = HO[i][j];
+							} else { // 11
+								double ID = 1.;
+								double HH = HO[i-1][j];
 								IFROF[i][j] = 'Y';
 								if (HH > EPS) {
 									SMN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
@@ -477,34 +481,35 @@ public class Main {
 							}
 						}
 
+						// go to 20
 						// Y-Direction
-						if (IP[i][j - 1] != 'M') {
-							if (ZB[i][j - 1] < ZS[i][j]) {
-								if (ZB[i][j] < ZS[i][j - 1]) {
+						if (IP[i][j - 1] != 'M') {  // goto 10
+							if (ZB[i][j - 1] < ZS[i][j]) { // goto 21
+								if (ZB[i][j] < ZS[i][j - 1]) {  // goto 22
 									JFROF[i][j] = 'N';
 								} else {
-									double ID = 1.;
-									double HH = HO[i][j - 1];
+									double ID = -1.;
+									double HH = HO[i][j];
 									JFROF[i][j] = 'Y';
-									if (HH > EPS) {
+									if (HH > EPS) { // goto 24
 										SNN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
 									} else {
 										SNN[i][j] = 0.0;
 									}
 								}
 
-							} else {
-								double ID = -1.;
-								double HH = HO[i][j];
+							} else { //21
+								double ID = 1.;
+								double HH = HO[i][j-1];
 								JFROF[i][j] = 'Y';
-								if (HH > EPS) {
+								if (HH > EPS) { // goto 24
 									SNN[i][j] = ID * CQ * HH * Math.sqrt(G * HH);
-								} else {
-									SNN[i][j] = 0.0;
+								} else { // 24
+									SNN[i][j] = 0.0;  
 								}
 							}
 
-						}
+						} // 10
 					}
 				}
 			}
@@ -521,27 +526,29 @@ public class Main {
 			for (int j = 0; j < JMAX; j++) {
 				if (i != 0 && j != 0) {
 					// convection term : D(UM)/DX on (I+1/2,J)-(I+1/2,j+1)
-					if (IP[i][j] != 'M') {
+					if (IP[i][j] != 'M') {  // goto 610
 						HHE = (HCV[i + 1][j] + HCV[i][j]) * 0.5;
 						HH = (HCV[i][j] + HCV[i - 1][j]) * 0.5;
-						if (HHE > ESPCV) {
+						if (HHE > ESPCV) { // goto 601
 							UEE = SMXCV[i + 1][j] / HHE;
-						} else {
+						} else { // 601
 							UEE = 0.0;
 						}
-						if (HH > ESPCV) {
+						if (HH > ESPCV) {  //goto 603
 							UU = SMXCV[i][j] / HH;
-						} else {
+							// goto 604
+						} else {  // 603
 							UU = 0.0;
 						}
-						UE = (UEE + UU) * 0.5;
-						if (UE < 0.0) {
+						UE = (UEE + UU) * 0.5;  // 604
+						if (UE < 0.0) {   // 605
 							CUM[i][j] = UE * SMXCV[i + 1][j];
-						} else {
+							// goto 615
+						} else {  //605
 							CUM[i][j] = UE * SMXCV[i][j];
-						}
+						} // 615
 
-					} else {
+					} else {  // 610
 						CUM[i][j] = 0.0;
 					}
 
