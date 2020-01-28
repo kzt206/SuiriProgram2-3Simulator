@@ -322,7 +322,7 @@ public class Main {
 									System.out.println("i:" +i + " j:" + j);
 									System.out.println("SMN: " +SMN[i][j]);
 									if ((HO[i][j] > EPS || SMN[i][j] >= 0.0)
-											&& (HO[i - 1][j] > EPS || SMN[i][j] >= 0.0)) {
+											&& (HO[i - 1][j] > EPS || SMN[i][j] <= 0.0)) {
 										if (Math.abs(SMN[i][j]) < 5.0e-5) {
 											SMN[i][j] = 0.;
 										}
