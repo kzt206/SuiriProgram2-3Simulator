@@ -368,7 +368,7 @@ public class Main {
 											- (ZS[i][j] - ZS[i][j - 1]) * HH * DTGDX) / (1. + SFN);
 									System.out.println("SNN: " +SNN[i][j]);
 									if ((HO[i][j] > EPS || SNN[i][j] >= 0.0)
-											&& (HO[i][j-1] > EPS || SNN[i][j] >= 0.0)) {
+											&& (HO[i][j-1] > EPS || SNN[i][j] <= 0.0)) {
 										if (Math.abs(SNN[i][j]) < 5.0e-5) {
 											SNN[i][j] = 0.;
 										}
