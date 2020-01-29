@@ -294,16 +294,16 @@ public class Main {
 		// Discharge flux
 		for (int i = 0; i < IMAX; i++) {
 			for (int j = 0; j < JMAX; j++) {
-				if (i != 0 && j != 0) {
+				if (i != 0 && j != 0) {  // goto 10
 					tmpIP = IP[i][j];
 					tmpbIP = IP[i - 1][j];
 					tmpIFROF = IFROF[i][j];
-					if (IP[i][j] != 'M' && IP[i][j] != 'B') {
+					if (IP[i][j] != 'M' && IP[i][j] != 'B') {  //goto 30
 						// X-DIRECTION
 						if (IP[i - 1][j] != 'M') {
 							if (IFROF[i][j] != 'Y') {
 								if ((ZS[i][j] <= ZS[i - 1][j] || HO[i][j] > EPS)
-										&& (ZS[i][j] >= ZS[i - 1][j] || HO[i - 1][j] > EPS)) {
+										&& (ZS[i][j] >= ZS[i - 1][j] || HO[i - 1][j] > EPS)) { //goto 15
 									HH = (HO[i][j] + HO[i - 1][j]) * .5;
 									if (HH > EPS) {
 										UX = SMO[i][j] / HH;
@@ -319,8 +319,8 @@ public class Main {
 									SMN[i][j] = (SMO[i][j] * (1. - SFM) - (CUM[i][j] - CUM[i - 1][j]) * DT2DX
 											- (CVM[i][j + 1] - CVM[i][j]) * DT2DY
 											- (ZS[i][j] - ZS[i - 1][j]) * HH * DTGDX) / (1. + SFM);
-									System.out.println("i:" +i + " j:" + j);
-									System.out.println("SMN: " +SMN[i][j]);
+//									System.out.println("i:" +i + " j:" + j);
+//									System.out.println("SMN: " +SMN[i][j]);
 									if ((HO[i][j] > EPS || SMN[i][j] >= 0.0)
 											&& (HO[i - 1][j] > EPS || SMN[i][j] <= 0.0)) {
 										if (Math.abs(SMN[i][j]) < 5.0e-5) {
@@ -348,7 +348,7 @@ public class Main {
 
 						// Y-DIRECTION
 						if (IP[i][j - 1] != 'M') {
-							if (IFROF[i][j] != 'Y') {
+							if (JFROF[i][j] != 'Y') {
 								if ((ZS[i][j] <= ZS[i][j - 1] || HO[i][j] > EPS)
 										&& (ZS[i][j] >= ZS[i][j - 1] || HO[i][j - 1] > EPS)) {
 									HH = (HO[i][j] + HO[i][j - 1]) * .5;
@@ -366,7 +366,7 @@ public class Main {
 									SNN[i][j] = (SNO[i][j] * (1. - SFN) - (CUN[i+1][j] - CUN[i][j]) * DT2DX
 											- (CVN[i][j] - CVN[i][j - 1]) * DT2DY
 											- (ZS[i][j] - ZS[i][j - 1]) * HH * DTGDX) / (1. + SFN);
-									System.out.println("SNN: " +SNN[i][j]);
+//									System.out.println("SNN: " +SNN[i][j]);
 									if ((HO[i][j] > EPS || SNN[i][j] >= 0.0)
 											&& (HO[i][j-1] > EPS || SNN[i][j] <= 0.0)) {
 										if (Math.abs(SNN[i][j]) < 5.0e-5) {
@@ -396,10 +396,10 @@ public class Main {
 						SMN[i][j] = 0.;
 						SNN[i][j] = 0.;
 					}
-					if(SMN[i][j]!=0.) {
-					System.out.println("last SMN:" + SMN[i][j]);
-					System.out.println("last SNN:" + SNN[i][j]);
-					}
+//					if(SMN[i][j]!=0.) {
+//					System.out.println("last SMN:" + SMN[i][j]);
+//					System.out.println("last SNN:" + SNN[i][j]);
+//					}
 				} else {
 					// goto 10
 					continue;
@@ -417,6 +417,7 @@ public class Main {
 					QQ = QBR / DY;
 					SMN[IBR][JBR] = IBRD * QQ;
 					SNN[IBR][JBR] = 0.0;
+//					System.out.println("SMN[IBR][JBR]: " + SMN[IBR][JBR] + " ,SNN[IBR][JBR]" + SNN[IBR][JBR]);
 				}
 			} else {
 				QQ = QBR / DX;
@@ -435,6 +436,7 @@ public class Main {
 			for (int j = 0; j < JMAX; j++) {
 				if (IP[i][j] != 'M' && IP[i][j] != 'B') {
 					HN[i][j] = HO[i][j] - (SMN[i + 1][j] - SMN[i][j]) * DT2DX - (SNN[i][j + 1] - SNN[i][j]) * DT2DY;
+					if(HN[i][j] < 0.) HN[i][j] = 0.0;
 				} else {
 					HN[i][j] = 0.;
 				}
