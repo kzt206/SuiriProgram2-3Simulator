@@ -15,38 +15,38 @@ import javax.xml.parsers.DocumentBuilder;
 public class Main {
 
 	// Global variables for qbreak()
-	static int NHT;
-	static double TRLX;
-	static double[] QHYD;
+	static int NHT; //計算の対象時間数　１３時間
+	static double TRLX;  //流量の急増を抑える緩和時間　３００秒
+	static double[] QHYD; //氾濫流量１時間毎の値
 
 	// Global variables for indflw()
-	static int IMAX, JMAX;
+	static int IMAX, JMAX; //計算の対象範囲 x方向 IMAX=36, y方向 JMAX=48
 	static double DT, DX, DY, G, EPS, DT2DX, DT2DY, DTGDX, DTGDY, DT2, DXDY;
 	static int IBR, JBR, IBRD, JBRD; // Break point, flood direction
-	static double QBR;
+	static double QBR; //氾濫流量 qbreake()より求める
 
-	static char[][] IP;
-	static double[][] ZB; // land height
-	static double[][] RN; // Mannig roughness
+	static char[][] IP;  //差分格子の座標
+	static double[][] ZB; // 地盤高
+	static double[][] RN; // マニングの粗度係数
 
-	static double[][] SMO; // x direction flux
-	static double[][] SNO; // y direction flux
+	static double[][] SMO; // x direction flux at i,j+1/2 in t=n*DT
+	static double[][] SNO; // y direction flux at i+1/2,j in t=n*DT
 	static double[][] HO; // water depth
 	static double[][] ZS; // water height
-	static double[][] SMN;
-	static double[][] SNN;
-	static double[][] HN;
-	static double[][] SMXCV;
-	static double[][] SNYCV;
-	static double[][] HCV;
-	static double[][] CUM;
-	static double[][] CVM;
-	static double[][] CUN;
-	static double[][] CVN;
-	static char[][] IFROF;
-	static char[][] JFROF;
-	static double[][] RNGX;
-	static double[][] RNGY;
+	static double[][] SMN; // x direction flux at i,j+1/2 in t=(n+2)*DT
+	static double[][] SNN; // y direction flux at i+1/2,j in t=(n+2)*DT
+	static double[][] HN;  // 座標i+1/2,j+1/2の時間t=(n+3)*DTの水深
+	static double[][] SMXCV; // x direction flux at i,j+1/2 for convection term calculation
+	static double[][] SNYCV; // y direction flux at i+1/2,j for convection term calculation
+	static double[][] HCV;          // water depth at i+1/2,j+1/2 for convection term calclulation
+	static double[][] CUM;  // 移流項 convx(x)
+	static double[][] CVM;  // 移流項 convx(y)
+	static double[][] CUN;  // 移流項 convy(x)
+	static double[][] CVN;  // 移流項 convy(y)
+	static char[][] IFROF;  // 段落ち計算をしたかどうか Y or N
+	static char[][] JFROF;  // 段落ち計算をしたかどうか Y or N
+	static double[][] RNGX;  // 抵抗項に関する定数
+	static double[][] RNGY;  // 抵抗項に関する定数
 
 	public static void main(String... args) {
 
@@ -56,7 +56,7 @@ public class Main {
 		int NPRINT = 180;
 		int NFILE = 360;
 
-		start();
+		start(); //入力ファイルの読み込み、変数の初期化
 		
 		PrintWriter pHOWriter=null,pSMOWriter=null,pSNOWriter=null;
 
@@ -77,11 +77,11 @@ public class Main {
 		// int N1 = NSTEP/NPRINT;
 		for (int NSTEP = 0; NSTEP < NFINAL + 1; NSTEP++) {
 			double TIME = NSTEP * DT2;
-			QBR = qbreak(TIME, QBR);
+			QBR = qbreak(TIME, QBR); //氾濫流量の計算
 			System.out.println("NSTEP: " + NSTEP);
 			System.out.println("QBR: " + QBR);
 
-			indflw(NSTEP, TIME);
+			indflw(NSTEP, TIME); //氾濫流の計算
 
 			VIN = VIN + QBR * DT2;
 
@@ -155,6 +155,7 @@ public class Main {
 
 	}
 
+	//入力ファイルの読み込み、変数の初期化//入力ファイルの読み込み、変数の初期化
 	static void start() {
 		// BEGIN of Subroutine START
 		// Read GEO2D.DAT
@@ -170,27 +171,27 @@ public class Main {
 		// System.out.printf("Main.java :IMAX:%d, JMAX:%d\n", IMAX, JMAX);
 
 		// Data block
-		DX = 285.44;
-		DY = 231.0;
-		G = 9.8;
-		EPS = 0.001;
-		DT = 2.5;
-		IBR = 29 - 1;
-		JBR = 42 - 1;
-		IBRD = -1;
-		JBRD = 0;
+		DX = 285.44; //x方向の格子幅
+		DY = 231.0;  //y方向の格子幅
+		G = 9.8;    // 重力値
+		EPS = 0.001;  //各格子の水深限度
+		DT = 2.5;  //計算のステップ 2.5秒
+		IBR = 29 - 1; //破堤箇所
+		JBR = 42 - 1; //破堤箇所
+		IBRD = -1;    //流入流量の方向 x方向
+		JBRD = 0;     //流入流量の方向 y方向
 		QBR = 0.0;
 
 		// Set Break Point
 		// Change of IP for LEVEE-Break Point
-		IP[IBR][JBR] = 'B';
+		IP[IBR][JBR] = 'B'; // 破堤箇所の設定
 
 		// Read FLOOD.DAT
-		FileFloodRead ffRead = new FileFloodRead();
-		NHT = ffRead.getNHT();
+		FileFloodRead ffRead = new FileFloodRead();  //FLOOD.DATの読み込み
+		NHT = ffRead.getNHT(); //１時間ごとの氾濫流量
 		// System.out.println("NHT: " + NHT);
-		TRLX = ffRead.getTRLX();
-		QHYD = ffRead.getFloodQ();
+		TRLX = ffRead.getTRLX(); //急激な氾濫流量の増加の緩和時間
+		QHYD = ffRead.getFloodQ(); //氾濫流量の１時間毎の値
 
 		// Initialization of Variables
 		SMO = new double[IMAX][JMAX];
@@ -259,6 +260,7 @@ public class Main {
 		// END of Subroutine START
 	}
 
+	//氾濫流の計算
 	static double qbreak(double TIME, double QBR) {
 		// System.out.println("Start qbreak().");
 		// for(double d : QHYD) {
@@ -282,10 +284,11 @@ public class Main {
 		return QBR;
 	}
 
+	//氾濫流の計算
 	static void indflw(int NSTEP, double TIME) {
-		frovf();
-		convx();
-		convy();
+		frovf(); //段落ちのある格子での流量フラックスの計算
+		convx(); //x方向の移流項の計算
+		convy(); //y方向の移流項の計算
 
 		double HH, SFM, SFN, UX, VY;
 
@@ -417,7 +420,7 @@ public class Main {
 					QQ = QBR / DY;
 					SMN[IBR][JBR] = IBRD * QQ;
 					SNN[IBR][JBR] = 0.0;
-//					System.out.println("SMN[IBR][JBR]: " + SMN[IBR][JBR] + " ,SNN[IBR][JBR]" + SNN[IBR][JBR]);
+					System.out.println("SMN[IBR][JBR]: " + SMN[IBR][JBR] + " ,SNN[IBR][JBR]" + SNN[IBR][JBR]);
 				}
 			} else {
 				QQ = QBR / DX;
@@ -445,7 +448,7 @@ public class Main {
 
 	}
 
-	// �i���������̗��ʌv�Z
+	// i¿ªÌ¬ÊvZ
 	static void frovf() {
 		double CQ = 0.544;
 		for (int i = 0; i < IMAX; i++) {
